@@ -43,6 +43,7 @@ import PopularProductScreen from '../screens/PopularProductScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
 import TabNavigator from './TabNavigator';
+import CoinProductDescription from '../screens/CoinProductDescription';
 const Stack = createNativeStackNavigator();
 const AppNavigation = () => {
 
@@ -56,7 +57,7 @@ const AppNavigation = () => {
   const getUserData = async () => {
     try {
       const getData = await getStorageData();
-       console.log("getData", getData)
+       console.log("getData", getData.access_token)
       if (getData) 
       setAuth(getData.access_token)
       setLoad(false);
@@ -109,6 +110,7 @@ const AppNavigation = () => {
       <Stack.Screen name="EditProfileScreen" component={EditProfileScreen} />
       <Stack.Screen name="SelectAddress" component={SelectAddress} />
       <Stack.Screen name="Create" component={Create} />
+      <Stack.Screen name="CoinProductDescription" component={CoinProductDescription} />
     </Stack.Navigator>
     )
     : (

@@ -3,6 +3,7 @@ import { Text, View, StyleSheet, Image, Dimensions } from 'react-native';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 
 import IonIcon from 'react-native-vector-icons/Ionicons';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 
 import { useNavigation } from '@react-navigation/native';
 
@@ -73,7 +74,19 @@ const CustomDrawer = ({ props }: any) => {
             onPress={navigateToScreen('ProductName')}
           />
         </View>
-
+        <View style={styles.drawerView}>
+          <DrawerItem
+            icon={() => (
+              <FontAwesome6
+                name="coins"
+                size={20}
+                color="black"
+              />
+            )}
+            label={() => <Text style={styles.RouteName}>Coins & Rewards</Text>}
+            onPress={navigateToScreen('ProductVoucher')}
+          />
+        </View>
         <View style={styles.drawerView}>
           <DrawerItem
             icon={() => (

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Dimensions, Image, Pressable, SafeAreaView, ScrollView, TouchableOpacity, ActivityIndicator, RefreshControl, useWindowDimensions, BackHandler, FlatList } from 'react-native';
 import IonIcon from 'react-native-vector-icons/Ionicons';
@@ -15,11 +16,11 @@ import Colors from '../style/colors';
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
 
-const ProductDetails = ({ navigation, route }: any) => {
+const CoinProductDescription = ({ navigation, route }: any) => {
 
   const cartValue = useSelector((state: any) => state.reducer);
-  const { productId, categoryId } = route.params;
-  // console.log("productId", productId);
+  const { productId,categoryId} = route.params;
+//    console.log("productId", productId);
   // console.log("categoryId", categoryId);
   const [product, setProduct] = useState();
   const [quantity, setQuantity] = useState(1);
@@ -31,7 +32,7 @@ const ProductDetails = ({ navigation, route }: any) => {
   const [variantPrice, setVariantPrice] = useState();
   const [relatedProduct, setRelatedProduct] = useState([]);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
-  const [displayedPrice, setDisplayedPrice] = useState(product?.main_price || "");
+ 
   const [selectedTopVariation, setselectedTopVariation] = useState('');
   const [selectedBottomVariation, setselectedBottomVariation] = useState('');
 
@@ -40,7 +41,6 @@ const ProductDetails = ({ navigation, route }: any) => {
 
   useEffect(() => {
     singleProduct();
-    variationPricing();
     relatedProducts();
 
     const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
@@ -64,10 +64,10 @@ const ProductDetails = ({ navigation, route }: any) => {
   const singleProduct = async () => {
     try {
       setLoading(true);
-      const api: any = await getMethod(`products/${productId}`);
+      const api: any = await getMethod(`show-coin-product?product_id=${productId}`);
       if (api.status === 200) {
+        console.log("photos", api.data.data);
         setProduct(api.data.data);
-        setDisplayedPrice(api.data.data.main_price);
         setLoading(false);
       } else {
         console.log('API Error:', api.data.message);
@@ -112,7 +112,7 @@ const ProductDetails = ({ navigation, route }: any) => {
       };
       console.log("carts.........................", body);
 
-      const response: any = await postMethod('carts/add', body);
+      const response: any = await postMethod('redemption-shop/carts/add', body);
       if (response.status === 200) {
         setAddCart(response.data);
         console.log("Form post method response", response.data.message);
@@ -160,27 +160,6 @@ const ProductDetails = ({ navigation, route }: any) => {
       console.log('Error while fetchinggg:', e);
     }
   }
-
-  const variationPricing = async () => {
-    try {
-      if (selectedTopVariation && selectedBottomVariation) { // Check if both top and bottom variants are selected
-
-        const selectedVariant = `${selectedTopVariation}-${selectedBottomVariation}`;
-  
-        const api: any = await getMethod(`products-variant-price?product_id=${productId}&top_variant=${selectedTopVariation}&bottom_variant=${selectedBottomVariation}`);
-
-        if (api.status === 200) {
-          setVariantPrice(api.data);
-          setDisplayedPrice(api.data.main_price); // Update the displayed price
-        } else {
-          console.log('API Error:', api.data.message);
-        }
-      }
-    } catch (e) {
-      console.log('Error while fetchinggg:', e);
-    }
-  }
-
 
 
   return (
@@ -235,12 +214,8 @@ const ProductDetails = ({ navigation, route }: any) => {
                           <Text style={styles.name}>{product.name}</Text>
                         </View>
                         <View style={styles.price}>
-                          <Text style={{ color: Colors.brand_primary, fontFamily: 'Poppins-SemiBold' }}>Price:</Text>
-
-                          {product.has_discount && (
-                            <Text style={{ fontFamily: 'Poppins-SemiBold', color: 'black', textDecorationLine: 'line-through' }}>{product.stroked_price}</Text>
-                          )}
-                          <Text style={{ fontFamily: 'Poppins-SemiBold', color: 'black' }}>{displayedPrice}</Text>
+                          <Text style={{ color: Colors.brand_primary, fontFamily: 'Poppins-SemiBold' }}>Loyalty Points:</Text>
+                          <Text style={{ fontFamily: 'Poppins-SemiBold', color: 'black' }}>{product.loyalty_points}</Text>
 
                         </View>
                         <View style={{ marginTop: 35, marginBottom: 10, flexDirection: 'row', marginLeft: 23 }}>
@@ -276,7 +251,7 @@ const ProductDetails = ({ navigation, route }: any) => {
                                     ]}
                                     onPress={() => {
                                       setselectedTopVariation(topVariant);
-                                      variationPricing(); // Call variationPricing function when top variant is selected
+                                      // Call variationPricing function when top variant is selected
                                     }}
                                   >
                                     {topVariant}
@@ -294,7 +269,7 @@ const ProductDetails = ({ navigation, route }: any) => {
                                     ]}
                                     onPress={() => {
                                       setselectedBottomVariation(bottomVariant);
-                                      variationPricing(); // Call variationPricing function when bottom variant is selected
+                                      // Call variationPricing function when bottom variant is selected
                                     }}
                                   >
                                     {bottomVariant}
@@ -335,10 +310,7 @@ const ProductDetails = ({ navigation, route }: any) => {
                       data={relatedProduct}
                       keyExtractor={(item) => item.id.toString()}
                       renderItem={({ item }) => (
-                        <Pressable style={styles.boxx} key={item.id} onPress={() => navigation.navigate('ProductDetails',
-                          {
-                            productId: item.id,
-                          })}>
+                        <Pressable style={styles.boxx} key={item.id}>
                           <View style={styles.categories_1}>
                             <View style={styles.aboutView}>
                               <Image source={{ uri: item.thumbnail_img }} style={styles.about} />
@@ -373,9 +345,10 @@ const ProductDetails = ({ navigation, route }: any) => {
       </SafeAreaView>
     </View>
   )
+
 }
 
-export default ProductDetails
+export default CoinProductDescription;
 
 const styles = StyleSheet.create({
   htmlContainer: {
@@ -828,7 +801,4 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
 })
-function setSelectedVariant(arg0: string) {
-  throw new Error('Function not implemented.');
-}
 

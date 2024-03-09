@@ -194,7 +194,17 @@ const CartScreen = ({ navigation }: any) => {
                                 <Text style={styles.column_text}>{category.product_name}</Text>
                                 {/* <Text style={styles.column_text}>{category.cart_id}</Text> */}
                                 <View style={styles.price}>
-                                    <Text style={styles.price_0}>{category.price}</Text>
+                                    {category.loyalty_coins === 0 ? (
+                                        <Text style={styles.price_0}>{category.price}</Text>
+                                    ) : (
+                                        <View style={{flexDirection:'row'}}>
+                                            <Image
+                                                style={styles.tinyLogo}
+                                                source={require('../../../assets/img/Loyalty.png')}
+                                            />
+                                            <Text style={styles.price_0}>{category.loyalty_coins}</Text>
+                                        </View>
+                                    )}
                                 </View>
 
                                 <View style={styles.quantity_0}>
@@ -239,6 +249,12 @@ export default CartScreen;
 const width = Dimensions.get('window').width;
 
 const styles = StyleSheet.create({
+    tinyLogo:{
+        width:10,
+        height:10,
+        marginRight:-20,
+        marginTop:2
+    },
 
     body: {
         flex: 1,
@@ -366,7 +382,7 @@ const styles = StyleSheet.create({
         fontSize: width * 0.04,
         fontWeight: '500',
         lineHeight: 24,
-        color:Colors.brand_primary,
+        color: Colors.brand_primary,
         marginLeft: 3,
     },
 
