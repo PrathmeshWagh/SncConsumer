@@ -51,7 +51,7 @@ const CouponScreen = (): JSX.Element => {
                         </View>
 
                         {coupon.map((item, index) => (
-                            <View key={index} style={styles.container}>
+                            <View key={index} style={styles.couponContainer}>
                                 <View style={styles.boxContent}>
                                     <Text>S&C Furniture</Text>
                                 </View>
@@ -75,6 +75,15 @@ const height = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
+        backgroundColor: 'white',
+        // marginTop: 20,
+        // borderColor: Colors.black,
+        // borderWidth: 1,
+        // padding: 14,
+        // borderRadius: 8
+    },
+    couponContainer:{
         flex: 1,
         backgroundColor: 'white',
         marginTop: 20,

@@ -11,6 +11,7 @@ import Snackbar from 'react-native-snackbar';
 import Appbar from '../../components/Appbar';
 import { useFocusEffect } from '@react-navigation/native';
 import Colors from '../style/colors';
+import { Pressable } from 'react-native';
 
 
 const Checkout = ({ navigation, route }: any) => {
@@ -37,13 +38,14 @@ const Checkout = ({ navigation, route }: any) => {
   const [loadingGetDetails, setLoadingGetDetails] = useState(false);
   const [isSelfCollection, setIsSelfCollection] = useState(false);
   const [deliveryType, setDeliveryType] = useState('');
+  const [coupon, setCoupon] = useState('');
 
-  useFocusEffect(
-    useCallback(() => {
-      handleDelivery();
-      availableDeliveryDates();
-    }, [])
-  );
+  // useFocusEffect(
+  //   useCallback(() => {
+  //     handleDelivery();
+  //     availableDeliveryDates();
+  //   }, [])
+  // );
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -183,7 +185,7 @@ const Checkout = ({ navigation, route }: any) => {
         });
         navigation.navigate("TabNavigator")
       } else {
-        console.log('else',api.data);
+        console.log('else', api.data);
         Snackbar.show({
           text: api.data.message,
           duration: Snackbar.LENGTH_SHORT,
@@ -247,7 +249,15 @@ const Checkout = ({ navigation, route }: any) => {
                 )}
               </View>
             ) : null}
-
+            <View style={styles.align}>
+              <TextInput
+                style={styles.input}
+                onChangeText={setCoupon}
+                value={coupon}
+                placeholder="Apply Coupon or Voucher"
+              />
+              <Text style={styles.applyText}>Apply</Text>
+            </View>
             <View style={styles.detailedContainer}>
               {loadingGetDetails ? (
                 <ActivityIndicator size="small" color={Colors.brand_primary} />
@@ -320,7 +330,7 @@ const Checkout = ({ navigation, route }: any) => {
                         // Render CalendarPicker with all dates enabled
                         <CalendarPicker
                           onDateChange={(date) => {
-                            const formattedDate:any = moment(date).format('YYYY-MM-DD');
+                            const formattedDate: any = moment(date).format('YYYY-MM-DD');
                             setSelectedDate(formattedDate);
                             console.log('Selected Date:', formattedDate);
                           }}
@@ -330,7 +340,7 @@ const Checkout = ({ navigation, route }: any) => {
                         <CalendarPicker
                           disabledDates={isDateDisabled}
                           onDateChange={(date) => {
-                            const formattedDate:any = moment(date).format('YYYY-MM-DD');
+                            const formattedDate: any = moment(date).format('YYYY-MM-DD');
                             setSelectedDate(formattedDate);
                             console.log('Selected Date:', formattedDate);
                           }}
@@ -410,12 +420,33 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
   },
+
+  align: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  applyText: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: Colors.brand_primary,
+    paddingHorizontal:20
+  },
+  input: {
+    flex: 1,
+    borderWidth: 1,
+    borderColor:'#E3E3E3',
+    backgroundColor: '#E3E3E3',
+    padding: 10,
+    marginLeft: 20,
+    marginVertical:20,
+    borderRadius:8
+  },
   nameNo: {
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
   name: {
-    color:Colors.brand_primary,
+    color: Colors.brand_primary,
     fontSize: 14,
     fontFamily: 'Poppins-SemiBold',
     borderRightWidth: 1,
