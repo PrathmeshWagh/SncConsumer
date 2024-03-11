@@ -6,6 +6,8 @@ import TabNavigator from './TabNavigator';
 import ProductScreen from '../screens/ProductScreen';
 import Policy from '../screens/Policy';
 import ProductVoucher from '../screens/ProductVoucher';
+import Voucher from '../screens/Voucher';
+import CouponScreen from '../screens/CouponScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -20,7 +22,9 @@ export default function DrawerNavigator() {
       <Drawer.Screen name="DrawerHome" component={TabNavigator} />
       <Drawer.Screen name="AboutName" component={AboutScreen} />
       <Drawer.Screen name="ProductName" component={ProductScreen} />
-      <Drawer.Screen name="ProductVoucher" component={ProductVoucher} />
+      <Drawer.Screen name="ProductVoucherName" component={ProductVoucher} />
+      <Drawer.Screen name="VoucherName" component={Voucher} />
+      <Drawer.Screen name="CouponScreenDrawer" component={CouponScreen} />
 
       <Drawer.Screen name="Policy" component={Policy} />
 

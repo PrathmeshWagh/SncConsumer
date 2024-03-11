@@ -72,8 +72,6 @@ const HeaderScreen = (navigation:any) => {
     navigation.openDrawer();
   };
 
- 
-
   return (
 
     <View>

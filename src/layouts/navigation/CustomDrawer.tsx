@@ -84,7 +84,46 @@ const CustomDrawer = ({ props }: any) => {
               />
             )}
             label={() => <Text style={styles.RouteName}>Coins & Rewards</Text>}
-            onPress={navigateToScreen('ProductVoucher')}
+            onPress={navigateToScreen('ProductVoucherName')}
+          />
+        </View>
+        <View style={styles.drawerView}>
+          <DrawerItem
+            icon={() => (
+              <FontAwesome6
+                name="coins"
+                size={20}
+                color="black"
+              />
+            )}
+            label={() => <Text style={styles.RouteName}>Voucher</Text>}
+            onPress={navigateToScreen('VoucherName')}
+          />
+        </View>
+        <View style={styles.drawerView}>
+          <DrawerItem
+            icon={() => (
+              <FontAwesome6
+                name="coins"
+                size={20}
+                color="black"
+              />
+            )}
+            label={() => <Text style={styles.RouteName}>Voucher</Text>}
+            onPress={navigateToScreen('VoucherName')}
+          />
+        </View>
+        <View style={styles.drawerView}>
+          <DrawerItem
+            icon={() => (
+              <FontAwesome6
+                name="coins"
+                size={20}
+                color="black"
+              />
+            )}
+            label={() => <Text style={styles.RouteName}>Coupons</Text>}
+            onPress={navigateToScreen('CouponScreenDrawer')}
           />
         </View>
         <View style={styles.drawerView}>
