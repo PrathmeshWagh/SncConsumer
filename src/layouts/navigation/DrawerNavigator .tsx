@@ -8,6 +8,8 @@ import Policy from '../screens/Policy';
 import ProductVoucher from '../screens/ProductVoucher';
 import Voucher from '../screens/Voucher';
 import CouponScreen from '../screens/CouponScreen';
+import DailyCheckIn from '../screens/DailyCheckIn';
+import CoinHistroyScreen from '../screens/CoinHistroyScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -25,9 +27,9 @@ export default function DrawerNavigator() {
       <Drawer.Screen name="ProductVoucherName" component={ProductVoucher} />
       <Drawer.Screen name="VoucherName" component={Voucher} />
       <Drawer.Screen name="CouponScreenDrawer" component={CouponScreen} />
-
       <Drawer.Screen name="Policy" component={Policy} />
-
+      <Drawer.Screen name="DailyCheckIn" component={DailyCheckIn} />
+      <Drawer.Screen name="CoinHistroyScreen" component={CoinHistroyScreen} />
       {/* <Drawer.Screen name="" component={} />
       <Drawer.Screen name="" component={} />
       <Drawer.Screen name="" component={} /> */}

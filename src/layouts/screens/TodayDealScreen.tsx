@@ -152,7 +152,7 @@ const TodayDealScreen = ({ navigation }: any) => {
             <View style={styles.searchContianer}>
               <Text style={styles.home}>Today's Deals</Text>
             </View>
-            <Text onPress={restFilter}>RESET FILTER</Text>
+            {/* <Text onPress={restFilter}>RESET FILTER</Text>
             <View style={styles.container}>
               <Pressable onPress={toggleModal} >
                 <View style={styles.content}>
@@ -171,7 +171,7 @@ const TodayDealScreen = ({ navigation }: any) => {
                   <Text style={styles.sortText}>{cartValue === 'CHINESE' ? language[3].chinese : language[3].english}</Text>
                 </View>
               </Pressable>
-            </View>
+            </View> */}
             <View style={styles.imageContainer_1} >
               {showAllProducts && // Render only if showAllProducts is true
                 products.map(item => (
@@ -531,7 +531,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginLeft: 12,
-    backgroundColor: 'white',
     flex:1,
   },
   imageContainer_one: {
@@ -546,7 +545,7 @@ const styles = StyleSheet.create({
     marginLeft: 12,
     // backgroundColor: 'white',
     // flex:1,
-    backgroundColor: 'white',
+  
 
   },
 

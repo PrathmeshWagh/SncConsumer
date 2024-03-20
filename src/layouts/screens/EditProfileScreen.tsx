@@ -9,6 +9,7 @@ import { CommonActions, useNavigation } from '@react-navigation/native';
 import Snackbar from 'react-native-snackbar';
 const { width, height } = Dimensions.get('window');
 import ImagePicker from 'react-native-image-crop-picker';
+import Colors from '../style/colors';
 
 
 
@@ -26,6 +27,7 @@ const EditProfileScreen = ({ route }: any) => {
         setEmail(email);
         setImageUrl(avatar);
     }, []);
+
     const navigation = useNavigation();
 
     const EditProfile = async () => {
@@ -39,13 +41,13 @@ const EditProfileScreen = ({ route }: any) => {
             name: 'profile.jpg', // Adjust the name as needed
         });
         console.log("formData", imageUrl)
-
         try {
-            const api: any = await FormPostMethod(`update-profile`, formData);
+            const api: any = await FormPostMethod(`update-profile`,formData);
             if (api.status === 200) {
                 console.log("api", api.data);
                 setLoading(false);
                 const existingUserData = await getStorageData();
+                console.log("existingUserData",existingUserData)
                 const updatedUserDetails = {
                     ...existingUserData.user, // Keep existing data
                     name: fullName,           // Update first_name
@@ -58,7 +60,7 @@ const EditProfileScreen = ({ route }: any) => {
                     user: updatedUserDetails,
                 };
                 await storeData(updatedUserData);
-                navigation.navigate('TabNavigation');
+                // navigation.navigate('TabNavigator');
             } else {
                 setLoading(false);
                 Snackbar.show({
@@ -108,7 +110,7 @@ const EditProfileScreen = ({ route }: any) => {
                 <IonIcon
                     name="arrow-back"
                     size={26}
-                    color={'red'}
+                    color={Colors.brand_primary}
                 // style={styles.img_3}
                 />
             </Pressable>
@@ -120,7 +122,6 @@ const EditProfileScreen = ({ route }: any) => {
                             name="camera"
                             size={26}
                             color='black'
-                        // style={styles.img_3}
                         />
                     </Pressable>
                 </View>
@@ -366,8 +367,8 @@ const styles = StyleSheet.create({
         padding: 10,
         paddingHorizontal: 40,
         marginTop: 40,
-        backgroundColor: '#EC1C24',
-        borderColor: '#EC1C24',
+        backgroundColor:Colors.brand_primary,
+        borderColor:Colors.brand_primary,
     },
     save: {
         color: 'white',

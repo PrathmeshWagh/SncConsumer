@@ -89,7 +89,7 @@ const Appbar = () => {
                             <TouchableOpacity onPress={handlePickerOpen}>
                                 <IonIcon name="public" size={26} color={Colors.brand_primary} />
                             </TouchableOpacity>
-                            {isPickerOpen && (
+                            {/* {isPickerOpen && (
                                 <View style={styles.pickerContainer}>
                                     {options.map(option => (
                                         <TouchableOpacity
@@ -108,7 +108,7 @@ const Appbar = () => {
                                         </TouchableOpacity>
                                     ))}
                                 </View>
-                            )}
+                            )} */}
                         </View>
                     {/* </Pressable> */}
                 </View>

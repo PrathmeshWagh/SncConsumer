@@ -44,6 +44,7 @@ import ProfileScreen from '../screens/ProfileScreen';
 import EditProfileScreen from '../screens/EditProfileScreen';
 import TabNavigator from './TabNavigator';
 import CoinProductDescription from '../screens/CoinProductDescription';
+import SearchScreen from '../screens/SearchScreen';
 const Stack = createNativeStackNavigator();
 const AppNavigation = () => {
 
@@ -111,6 +112,8 @@ const AppNavigation = () => {
       <Stack.Screen name="SelectAddress" component={SelectAddress} />
       <Stack.Screen name="Create" component={Create} />
       <Stack.Screen name="CoinProductDescription" component={CoinProductDescription} />
+      <Stack.Screen name="SearchScreen" component={SearchScreen} />
+
     </Stack.Navigator>
     )
     : (

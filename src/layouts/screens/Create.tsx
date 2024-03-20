@@ -6,6 +6,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import { TextInput } from 'react-native-paper';
 import { Controller, useForm } from 'react-hook-form';
+import Colors from '../style/colors';
 
 const Create = ({ navigation }: any) => {
     const [loading, setLoading] = useState(false);
@@ -57,9 +58,6 @@ const Create = ({ navigation }: any) => {
                 setLoading(false);
 
             } else {
-                console.log("response-else", response.data.message)
-                console.log("else the api")
-
                 Snackbar.show({
                     text: response.data.message,
                     duration: Snackbar.LENGTH_SHORT,
@@ -363,7 +361,7 @@ const Create = ({ navigation }: any) => {
                         <Controller
                             control={control}
                             render={({ field }) => (
-                                <TextInput placeholder="Enter your Unit No" style={styles.input}
+                                <TextInput placeholder="Enter your password" style={styles.input}
                                     underlineColor="white"
                                     keyboardType="numeric"
                                     value={password}
@@ -388,7 +386,7 @@ const Create = ({ navigation }: any) => {
                         <Controller
                             control={control}
                             render={({ field }) => (
-                                <TextInput placeholder="Enter your password" style={styles.input}
+                                <TextInput placeholder="Confirm Password" style={styles.input}
                                     underlineColor="white"
                                     keyboardType="numeric"
                                     value={confirmPassword}
@@ -463,7 +461,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignSelf: 'center',
         justifyContent: 'center',
-        backgroundColor: 'red',
+        backgroundColor:Colors.brand_primary,
         zIndex: -4,
         fontFamily: 'Poppins-Bold',
         fontSize: width * 0.04,
@@ -498,7 +496,7 @@ const styles = StyleSheet.create({
         borderRadius: width * 0.02,
         // paddingLeft: width * 0.01,
         paddingBottom: width * 0.02,
-        borderColor: 'red',
+        borderColor:Colors.brand_primary,
         color: 'black',
         borderWidth: 1,
         outlineWidth: 0,
@@ -509,7 +507,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins-Medium',
         fontSize: width * 0.03,
         borderRadius: width * 0.02,
-        borderColor: 'red',
+        borderColor: Colors.brand_primary,
         color: 'black',
         borderWidth: 1,
         outlineWidth: 0,
@@ -527,7 +525,7 @@ const styles = StyleSheet.create({
         width: '100%',
         fontWeight: '600',
         fontSize: 34,
-        color: 'red',
+        color:Colors.brand_primary,
         marginBottom: windowHeight * 0.03,
     },
 })

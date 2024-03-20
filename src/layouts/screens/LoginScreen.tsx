@@ -46,8 +46,8 @@ export const LoginScreen = ({ navigation }: any) => {
                 password: password,
             };
             const api: any = await postMethod('auth/login', raw);
-            if (api.status === 200) {
-                // console.log("api.data",api.data);
+            if (api.data.status === true) {
+                console.log("api.data",api.data.message);
                 await storeData(api.data);
                 Snackbar.show({
                     text: api.data.message,
@@ -60,12 +60,14 @@ export const LoginScreen = ({ navigation }: any) => {
                 const result = api.data;
                 dispatch(setToken(result.access_token));
             } else {
-                console.log('else');
+                console.log("else",api.data.message);
+                Snackbar.show({
+                    text: api.data.message,
+                    duration: Snackbar.LENGTH_SHORT,
+                    textColor: 'white',
+                    backgroundColor: 'red',
+                });
                 setApiEmail(email);
-                if (apiEmail && api.status === 200) {
-                    Alert.alert('inValid email and password');
-                }
-                console.log('EMAIL:', email, 'PASSWORD:', password);
 
             }
         } catch (error: any) {
@@ -159,16 +161,16 @@ export const LoginScreen = ({ navigation }: any) => {
                 {errors.password && (
                     <Text style={styles.errorText}>{errors.password.message}</Text>
                 )}
-                <View style={styles.pass}>
+                {/* <View style={styles.pass}>
                     <TouchableOpacity>
                         <Text style={styles.password}>Forgot Password?</Text>
                     </TouchableOpacity>
-                </View>
-                <View style={styles.btnContainer}>
+                </View> */}
+                {/* <View style={styles.btnContainer}>
                     <Pressable>
                         <Text style={styles.text}>LOGIN WITH FACEBOOK</Text>
                     </Pressable>
-                </View>
+                </View> */}
                 <View style={styles.btnContainer_1}>
                     {loading ? (
                         <ActivityIndicator size="small" color="white" />

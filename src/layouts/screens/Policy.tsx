@@ -13,26 +13,26 @@ const Policy = ({ navigation }: any) => {
             <HeaderScreen />
             <View style={styles.HeadView}>
                 <Text style={styles.text}>Return Policy</Text>
-                <TouchableOpacity onPress={() => openUrl('https://lfksingapore.com/return-policy')}>
-                    <Text style={styles.url}>https://lfksingapore.com/return-policy</Text>
+                <TouchableOpacity onPress={() => openUrl('https://snc.braincave.work//return-policy')}>
+                    <Text style={styles.url}>https://snc.braincave.work//return-policy</Text>
                 </TouchableOpacity>
             </View>
             <View style={styles.HeadView}>
                 <Text style={styles.text}>Terms and Condition</Text>
-                <TouchableOpacity onPress={() => openUrl('https://lfksingapore.com/terms')}>
-                    <Text style={styles.url}>https://lfksingapore.com/terms</Text>
+                <TouchableOpacity onPress={() => openUrl('https://snc.braincave.work/terms')}>
+                    <Text style={styles.url}>https://snc.braincave.work/terms</Text>
                 </TouchableOpacity>
             </View>
             <View style={styles.HeadView}>
                 <Text style={styles.text}>Data Protection Policy</Text>
-                <TouchableOpacity onPress={() => openUrl('https://lfksingapore.com/data-protection-policy')}>
-                    <Text style={styles.url}>https://lfksingapore.com/data-protection-policy</Text>
+                <TouchableOpacity onPress={() => openUrl('https://snc.braincave.work/data-protection-policy')}>
+                    <Text style={styles.url}>https://snc.braincave.work/data-protection-policy</Text>
                 </TouchableOpacity>
             </View>
             <View style={styles.HeadView}>
                 <Text style={styles.text}>Privacy Policy</Text>
-                <TouchableOpacity onPress={() => openUrl('https://lfksingapore.com/privacy-policy')}>
-                    <Text style={styles.url}>https://lfksingapore.com/privacy-policy</Text>
+                <TouchableOpacity onPress={() => openUrl('https://snc.braincave.work/privacy-policy')}>
+                    <Text style={styles.url}>https://snc.braincave.work/privacy-policy</Text>
                 </TouchableOpacity>
             </View>
         </View>

@@ -10,6 +10,9 @@ import { useNavigation } from '@react-navigation/native';
 import { Svg, Path } from 'react-native-svg';
 
 import React from 'react';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 
 
 
@@ -61,6 +64,19 @@ const CustomDrawer = ({ props }: any) => {
         <View style={styles.drawerView}>
           <DrawerItem
             icon={() => (
+              <FontAwesome6
+                name="coins"
+                size={20}
+                color="black"
+              />
+            )}
+            label={() => <Text style={styles.RouteName}>Daily Check In</Text>}
+            onPress={navigateToScreen('DailyCheckIn')}
+          />
+        </View>
+        <View style={styles.drawerView}>
+          <DrawerItem
+            icon={() => (
               <Svg width={16} height={16} viewBox="0 0 16 16">
                 <Path
                   fill-rule="evenodd"
@@ -96,15 +112,15 @@ const CustomDrawer = ({ props }: any) => {
                 color="black"
               />
             )}
-            label={() => <Text style={styles.RouteName}>Voucher</Text>}
-            onPress={navigateToScreen('VoucherName')}
+            label={() => <Text style={styles.RouteName}>Coins History</Text>}
+            onPress={navigateToScreen('CoinHistroyScreen')}
           />
         </View>
         <View style={styles.drawerView}>
           <DrawerItem
             icon={() => (
-              <FontAwesome6
-                name="coins"
+              <MaterialCommunityIcons
+                name="ticket-percent"
                 size={20}
                 color="black"
               />
@@ -113,11 +129,12 @@ const CustomDrawer = ({ props }: any) => {
             onPress={navigateToScreen('VoucherName')}
           />
         </View>
+        
         <View style={styles.drawerView}>
           <DrawerItem
             icon={() => (
-              <FontAwesome6
-                name="coins"
+              <Ionicons
+                name="ticket-sharp"
                 size={20}
                 color="black"
               />
@@ -129,8 +146,8 @@ const CustomDrawer = ({ props }: any) => {
         <View style={styles.drawerView}>
           <DrawerItem
             icon={() => (
-              <IonIcon
-                name="information-circle-outline"
+              <MaterialIcons
+                name="policy"
                 size={20}
                 color="black"
               />

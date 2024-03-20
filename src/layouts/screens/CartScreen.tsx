@@ -8,6 +8,7 @@ import Snackbar from 'react-native-snackbar';
 import { Alert } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
 import Colors from '../style/colors';
+import Appbar from '../../components/Appbar';
 
 const CartScreen = ({ navigation }: any) => {
 
@@ -170,7 +171,7 @@ const CartScreen = ({ navigation }: any) => {
                 <SafeAreaView >
                     <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
 
-                        <HeaderScreen navigation={navigation} />
+                    <Appbar />
                         <View style={styles.searchContianer}>
                             <Text style={styles.home}>Cart </Text>
                             {/* <Text style={{

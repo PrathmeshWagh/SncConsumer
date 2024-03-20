@@ -6,6 +6,7 @@ import Snackbar from 'react-native-snackbar';
 import HeaderScreen from './HeaderScreen';
 import { RadioButton } from 'react-native-paper';
 import Colors from '../style/colors';
+import Appbar from '../../components/Appbar';
 
 
 const SelectAddress = ({ navigation, route }: any) => {
@@ -63,7 +64,6 @@ const SelectAddress = ({ navigation, route }: any) => {
         try {
             const api: any = await getMethod(`checkout/all-self-collection-address`);
             if (api.status === 200) {
-                console.log("api.data.data", api.data.data)
                 const apiData = api.data.data;
                 setApiData(apiData);
                 setIsLoading(false)
@@ -90,6 +90,7 @@ const SelectAddress = ({ navigation, route }: any) => {
 
             const api: any = await getMethod(`checkout/change-cart-delivery-address?address_id=${selectedRadio}&delivery_type=${delivery}`);
             if (api.status === 200) {
+                console.log("checkout/change-cart-delivery-address")
                 navigation.navigate('Checkout', {
                     deliveryValue: delivery
                 });
@@ -109,7 +110,7 @@ const SelectAddress = ({ navigation, route }: any) => {
 
     return (
         <View style={{ flex: 1 }}>
-            <HeaderScreen />
+           <Appbar />
             <View style={styles.contain}>
                 <ScrollView
                     refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
@@ -306,6 +307,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins-Medium',
         fontSize: width * 0.03,
         color: '#515151',
+        marginVertical:5
     },
     container_0: {
         width: width * 0.9,

@@ -8,6 +8,7 @@ import HeaderScreen from './HeaderScreen';
 import { getMethod, getStorageData, postMethod } from '../../utils/helper';
 import Snackbar from 'react-native-snackbar';
 import Appbar from '../../components/Appbar';
+import Colors from '../style/colors';
 
 
 function ProfileAddress({ navigation }: any) {
@@ -149,7 +150,7 @@ function ProfileAddress({ navigation }: any) {
 
 
             {isLoading ? (
-            <ActivityIndicator size="large" color="red" />
+            <ActivityIndicator size="large" color={Colors.brand_primary} />
           ) : (
                 <View style={{ width: '100%', alignItems: 'center', padding: 10 }}>
                   {apiData.map((dataItem) => (
@@ -170,7 +171,7 @@ function ProfileAddress({ navigation }: any) {
                         <Ionicons
                           name="call"
                           size={16}
-                          color="red"
+                          color={Colors.brand_primary}
                           style={styles.phone}
                         />
                         <Text style={styles.number}>+{dataItem.phone}</Text>
@@ -179,7 +180,7 @@ function ProfileAddress({ navigation }: any) {
                         <Ionicons
                           name="mail-unread-outline"
                           size={18}
-                          color="red"
+                          color={Colors.brand_primary}
                         // style={styles.add_img}
                         />
                         <Text style={styles.title_1}>{dataItem.email}</Text>
@@ -188,7 +189,7 @@ function ProfileAddress({ navigation }: any) {
                         <Ionicons
                           name="location-outline"
                           size={18}
-                          color="red"
+                          color={Colors.brand_primary}
                           style={styles.add_img}
                         />
                         <Text style={styles.title_2}>{dataItem.address}</Text>
@@ -197,7 +198,7 @@ function ProfileAddress({ navigation }: any) {
                         <Ionicons
                           name="location-outline"
                           size={18}
-                          color="red"
+                          color={Colors.brand_primary}
                           style={styles.add_img}
                         />
                         <Text style={styles.title_2}>
@@ -253,7 +254,7 @@ const styles = StyleSheet.create({
   addressButton: {
     width: width * 0.4,
     // height: width * 0.06,
-    backgroundColor: 'red',
+    backgroundColor: Colors.brand_primary,
     borderRadius: 10,
     color: 'white',
     fontSize: width * 0.03,
@@ -296,7 +297,7 @@ const styles = StyleSheet.create({
     // height: width * 0.06,
     fontFamily: 'Poppins-SemiBold',
     fontSize: width * 0.028,
-    color: 'red',
+    color:Colors.brand_primary,
     borderRightWidth: 2,
     borderColor: '#515151',
     paddingTop: width * 0.01,
@@ -318,7 +319,7 @@ const styles = StyleSheet.create({
     // height: width * 0.03,
     fontFamily: 'Poppins-SemiBold',
     // fontSize: width * 0.02,
-    color: 'red',
+    color:Colors.brand_primary,
     marginLeft: width * 0.03,
     marginRight: width * 0.02,
     marginTop: 5,
@@ -427,7 +428,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-SemiBold',
     fontSize: width * 0.03,
     borderColor: 'black',
-    color: 'red',
+    color:Colors.brand_primary
   },
 });
 // function setUserDetails(storedData: any) {

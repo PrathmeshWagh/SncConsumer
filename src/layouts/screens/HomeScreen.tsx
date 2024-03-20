@@ -10,7 +10,7 @@ import {
   Pressable, RefreshControl,
   FlatList, ActivityIndicator
 } from 'react-native';
-import { TextInput } from 'react-native-paper';
+import { Searchbar, TextInput } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/Ionicons';
 import HeaderScreen from './HeaderScreen';
 import Swiper from 'react-native-swiper';
@@ -29,6 +29,7 @@ const HomeScreen = ({ navigation }: any) => {
   const [flashDeals, setFlashDeals] = useState([])
   const [featuredDeals, setfeaturedDeals] = useState([]);
   const [popularProduct, setPopularProduct] = useState([]);
+  const [banner, setBanner] = useState();
   const [swiper, setSwiper] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
@@ -42,6 +43,7 @@ const HomeScreen = ({ navigation }: any) => {
         await featuredDeal();
         await popularProductDeal();
         await SwiperApi();
+        await BannerApi();
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -107,7 +109,6 @@ const HomeScreen = ({ navigation }: any) => {
     try {
       const api: any = await getMethod('all-categories-home-screen');
       if (api.status === 200) {
-        console.log("categoryData", api.data);
         setCategoryData(api.data.data);
       } else {
         console.log('API Error:', api.data.message);
@@ -169,7 +170,7 @@ const HomeScreen = ({ navigation }: any) => {
   }
   const SwiperApi = async () => {
     try {
-      const api: any = await getMethod('get-banners');
+      const api: any = await getMethod('get-slider');
       if (api.status === 200) {
         setSwiper(api.data.data);
       } else {
@@ -179,6 +180,23 @@ const HomeScreen = ({ navigation }: any) => {
       console.log('Error while fetchinggg:', e);
     }
   }
+  const BannerApi = async () => {
+    try {
+      const api: any = await getMethod('get-banner');
+      if (api.status === 200) {
+        setBanner(api.data.data);
+      } else {
+        console.log('API Error:', api.data.message);
+      }
+    } catch (e) {
+      console.log('Error while fetchinggg:', e);
+    }
+  }
+  const handleSearchPress = () => {
+    // Navigate to the search screen here
+    navigation.navigate('SearchScreen');
+  };
+
   return (
     <SafeAreaView>
       <ScrollView refreshControl={
@@ -192,16 +210,18 @@ const HomeScreen = ({ navigation }: any) => {
           <>
             <HeaderScreen />
             <View style={styles.body}>
-              <View style={styles.searchContianer}>
-                <TextInput style={styles.searchContent}
+              <Pressable style={styles.searchContianer} onPress={handleSearchPress}>
+              <Icon name="search" size={24} color="#BBBBBB" />
+              </Pressable>
+                {/* <TextInput style={styles.searchContent}
                   underlineColor="#E3E3E3"
                   right={
                     <TextInput.Icon
-                      icon={() => <Icon name="search" size={24} color="#BBBBBB" />}
+                      icon={() => }
                     />
                   }
-                />
-              </View>
+                /> */}
+             
               {/* ========================================================================================= */}
               <View>
                 {/* <Text onPress={() => navigation.navigate('Test')} style={{padding:30}}>Test</Text> */}
@@ -227,8 +247,7 @@ const HomeScreen = ({ navigation }: any) => {
               </View>
               <View style={styles.imageContainer}>
                 <View style={styles.categories}>
-                  <Text style={styles.text_0}>{cartValue === 'CHINESE' ? language[7].chinese : language[7].english}</Text>
-                  <Text style={styles.categoryView}>{cartValue === 'CHINESE' ? language[14].chinese : language[14].english}</Text>
+                  <Text style={styles.text_0}>Categories</Text>
                 </View>
                 <FlatList
                   horizontal
@@ -369,7 +388,7 @@ const HomeScreen = ({ navigation }: any) => {
                 )}
               />
 
-              <Image source={require('../../../assets/img/promotional-banner.png')} style={styles.offer} />
+              <Image source={{ uri: banner?.banner }} style={styles.offer} />
               <View style={styles.categories}>
                 <Text style={styles.text_0}>Popular Products</Text>
                 <Pressable onPress={() => navigation.navigate('PopularProductScreen')}>
@@ -434,14 +453,14 @@ const styles = StyleSheet.create({
     width: windowWidth * 0.9,
     height: windowWidth * 0.12,
     backgroundColor: '#E3E3E3',
-    flexDirection: 'row',
-    alignItems: 'center',
+    alignItems:'flex-end',
     alignSelf: 'center',
-    justifyContent: 'center',
     marginBottom: windowHeight * 0.02,
     borderRadius: 10,
-    zIndex: -5,
-    position: 'relative',
+    paddingRight:20,
+    paddingTop:10
+    // zIndex: -5,
+    // position: 'relative',
   },
 
   searchContent: {
@@ -519,10 +538,10 @@ const styles = StyleSheet.create({
   },
 
   categories: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
     marginBottom: windowWidth * 0.05,
     fontSize: windowWidth * 0.04,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
   },
 
   text_0: {

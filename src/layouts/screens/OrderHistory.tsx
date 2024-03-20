@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { getMethod } from '../../utils/helper';
 import { language } from '../../reduxFolder/langauge';
 import Appbar from '../../components/Appbar';
+import Colors from '../style/colors';
 
 
 const OrderHistory = ({ navigation }: any) => {
@@ -55,13 +56,13 @@ const OrderHistory = ({ navigation }: any) => {
                   <View style={styles.category}>
                     <Text style={styles.title}>Order ID: {order.consolidate_order_no}</Text>
                     <Text style={styles.title}>Delivery Date: {order.delivery_date}</Text>
-                    <Text style={styles.price}>${order.gross_amount}</Text>
-                    <Pressable>
+                    <Text style={styles.price}>{order.gross_amount}</Text>
+                    {/* <Pressable>
                       <View style={styles.btnContainer_1}>
                         <Text style={styles.button}>Order again</Text>
                         <Icon name="cart" size={width * 0.04} color="white" />
                       </View>
-                    </Pressable>
+                    </Pressable> */}
                   </View>
                 </View>
               </View>
@@ -179,10 +180,10 @@ const styles = StyleSheet.create({
 
   price: {
     width: width * 0.5,
-    whiteSpace: 'nowrap',
     fontFamily: 'Poppins-Medium',
     fontSize: width * 0.04,
-    color: 'red',
+    color:Colors.brand_primary,
+    marginVertical:5
   },
 
   success: {
@@ -212,7 +213,7 @@ const styles = StyleSheet.create({
     borderRadius: width * 0.02,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'red',
+    backgroundColor: Colors.brand_primary,
     zIndex: -4,
     fontFamily: 'Poppins-Bold',
     fontSize: width * 0.04,

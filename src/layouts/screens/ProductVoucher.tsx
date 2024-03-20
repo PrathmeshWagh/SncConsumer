@@ -21,6 +21,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { Svg, Path } from 'react-native-svg';
 import { getMethod } from '../../utils/helper';
 import { useFocusEffect } from '@react-navigation/native';
+import Colors from '../style/colors';
 
 
 const ProductVoucher = ({ navigation }: any) => {
@@ -50,7 +51,7 @@ const ProductVoucher = ({ navigation }: any) => {
         try {
             const api: any = await getMethod('coin-product-list');
             if (api.status === 200) {
-                console.log("hiiii",api.data.data.loyalty_points)
+                console.log("hiiii", api.data.data.loyalty_points)
                 setProduct(api.data.data);
             } else {
                 console.log('API Error:', api.data.message);
@@ -64,6 +65,7 @@ const ProductVoucher = ({ navigation }: any) => {
             <View>
                 <HeaderScreen navigation={navigation} />
                 <View style={styles.compound_0}>
+                    <Text style={styles.shop}>Coins & Redemption Shop</Text>
                     <View style={styles.row}>
                         <Text style={styles.voucher}>Products</Text>
                         <View style={{ flexDirection: 'row', gap: 5 }}>
@@ -75,14 +77,14 @@ const ProductVoucher = ({ navigation }: any) => {
                             >
                                 <Path
                                     d="M1 14C1 15.7072 1.33625 17.3977 1.98957 18.9749C2.64288 20.5521 3.60045 21.9852 4.80761 23.1924C6.01477 24.3995 7.44788 25.3571 9.02512 26.0104C10.6023 26.6637 12.2928 27 14 27C15.7072 27 17.3977 26.6637 18.9749 26.0104C20.5521 25.3571 21.9852 24.3995 23.1924 23.1924C24.3995 21.9852 25.3571 20.5521 26.0104 18.9749C26.6637 17.3977 27 15.7072 27 14C27 12.2928 26.6637 10.6023 26.0104 9.02512C25.3571 7.44788 24.3995 6.01477 23.1924 4.80761C21.9852 3.60045 20.5521 2.64288 18.9749 1.98957C17.3977 1.33626 15.7072 1 14 1C12.2928 1 10.6023 1.33626 9.02512 1.98957C7.44788 2.64288 6.01477 3.60045 4.80761 4.80761C3.60045 6.01477 2.64288 7.44788 1.98957 9.02512C1.33625 10.6023 1 12.2928 1 14Z"
-                                    stroke="#EC1C24"
+                                    stroke={Colors.brand_primary}
                                     strokeWidth={2}
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
                                 />
                                 <Path
                                     d="M18.0445 9.66672C17.7829 9.21282 17.4027 8.83862 16.9447 8.58419C16.4867 8.32975 15.9682 8.20465 15.4445 8.22228H12.5556C11.7895 8.22228 11.0547 8.52664 10.5129 9.06841C9.97111 9.61018 9.66675 10.345 9.66675 11.1112C9.66675 11.8773 9.97111 12.6121 10.5129 13.1539C11.0547 13.6957 11.7895 14.0001 12.5556 14.0001H15.4445C16.2107 14.0001 16.9455 14.3044 17.4873 14.8462C18.0291 15.388 18.3334 16.1228 18.3334 16.8889C18.3334 17.6551 18.0291 18.3899 17.4873 18.9317C16.9455 19.4735 16.2107 19.7778 15.4445 19.7778H12.5556C12.032 19.7955 11.5135 19.6704 11.0555 19.4159C10.5975 19.1615 10.2173 18.7873 9.95564 18.3334M14.0001 6.77783V21.2223"
-                                    stroke="#EC1C24"
+                                    stroke={Colors.brand_primary}
                                     strokeWidth={2}
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
@@ -95,47 +97,47 @@ const ProductVoucher = ({ navigation }: any) => {
                 </View>
 
                 {product.map((item, index) => (
-                <View key={index} style={styles.compound}>
-                    <View style={styles.compoundBOX}>
-                        <Pressable onPress={()=>navigation.navigate("CoinProductDescription",{
-                            productId:item.id,
-                            categoryId:item.category_id
-                        })}>
-                    <Image source={{ uri: item.thumbnail_img }} style={styles.productImg} />
-                    </Pressable>
-                        <View style={styles.category}>
-                            <Text style={styles.title}>{item.name} </Text>
-                            {/* <Text style={styles.title}>Repair Ant - Wrinkle Cream</Text> */}
-                            <Pressable >
-                                <View style={styles.btnContainer_1}>
-                                    <Svg
-                                        width={28}
-                                        height={20}
-                                        viewBox="0 0 28 28"
-                                        fill="none"
-                                    >
-                                        <Path
-                                            d="M1 14C1 15.7072 1.33625 17.3977 1.98957 18.9749C2.64288 20.5521 3.60045 21.9852 4.80761 23.1924C6.01477 24.3995 7.44788 25.3571 9.02512 26.0104C10.6023 26.6637 12.2928 27 14 27C15.7072 27 17.3977 26.6637 18.9749 26.0104C20.5521 25.3571 21.9852 24.3995 23.1924 23.1924C24.3995 21.9852 25.3571 20.5521 26.0104 18.9749C26.6637 17.3977 27 15.7072 27 14C27 12.2928 26.6637 10.6023 26.0104 9.02512C25.3571 7.44788 24.3995 6.01477 23.1924 4.80761C21.9852 3.60045 20.5521 2.64288 18.9749 1.98957C17.3977 1.33626 15.7072 1 14 1C12.2928 1 10.6023 1.33626 9.02512 1.98957C7.44788 2.64288 6.01477 3.60045 4.80761 4.80761C3.60045 6.01477 2.64288 7.44788 1.98957 9.02512C1.33625 10.6023 1 12.2928 1 14Z"
-                                            stroke="white"
-                                            strokeWidth={2}
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                        />
-                                        <Path
-                                            d="M18.0445 9.66672C17.7829 9.21282 17.4027 8.83862 16.9447 8.58419C16.4867 8.32975 15.9682 8.20465 15.4445 8.22228H12.5556C11.7895 8.22228 11.0547 8.52664 10.5129 9.06841C9.97111 9.61018 9.66675 10.345 9.66675 11.1112C9.66675 11.8773 9.97111 12.6121 10.5129 13.1539C11.0547 13.6957 11.7895 14.0001 12.5556 14.0001H15.4445C16.2107 14.0001 16.9455 14.3044 17.4873 14.8462C18.0291 15.388 18.3334 16.1228 18.3334 16.8889C18.3334 17.6551 18.0291 18.3899 17.4873 18.9317C16.9455 19.4735 16.2107 19.7778 15.4445 19.7778H12.5556C12.032 19.7955 11.5135 19.6704 11.0555 19.4159C10.5975 19.1615 10.2173 18.7873 9.95564 18.3334M14.0001 6.77783V21.2223"
-                                            stroke="white"
-                                            strokeWidth={2}
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                        />
-                                    </Svg>
-                                    <Text style={styles.button}>{item.loyalty_points}</Text>
-                                </View>
+                    <View key={index} style={styles.compound}>
+                        <View style={styles.compoundBOX}>
+                            <Pressable onPress={() => navigation.navigate("CoinProductDescription", {
+                                productId: item.id,
+                                categoryId: item.category_id
+                            })}>
+                                <Image source={{ uri: item.thumbnail_img }} style={styles.productImg} />
                             </Pressable>
+                            <View style={styles.category}>
+                                <Text style={styles.title}>{item.name} </Text>
+                                {/* <Text style={styles.title}>Repair Ant - Wrinkle Cream</Text> */}
+                                <Pressable >
+                                    <View style={styles.btnContainer_1}>
+                                        <Svg
+                                            width={28}
+                                            height={20}
+                                            viewBox="0 0 28 28"
+                                            fill="none"
+                                        >
+                                            <Path
+                                                d="M1 14C1 15.7072 1.33625 17.3977 1.98957 18.9749C2.64288 20.5521 3.60045 21.9852 4.80761 23.1924C6.01477 24.3995 7.44788 25.3571 9.02512 26.0104C10.6023 26.6637 12.2928 27 14 27C15.7072 27 17.3977 26.6637 18.9749 26.0104C20.5521 25.3571 21.9852 24.3995 23.1924 23.1924C24.3995 21.9852 25.3571 20.5521 26.0104 18.9749C26.6637 17.3977 27 15.7072 27 14C27 12.2928 26.6637 10.6023 26.0104 9.02512C25.3571 7.44788 24.3995 6.01477 23.1924 4.80761C21.9852 3.60045 20.5521 2.64288 18.9749 1.98957C17.3977 1.33626 15.7072 1 14 1C12.2928 1 10.6023 1.33626 9.02512 1.98957C7.44788 2.64288 6.01477 3.60045 4.80761 4.80761C3.60045 6.01477 2.64288 7.44788 1.98957 9.02512C1.33625 10.6023 1 12.2928 1 14Z"
+                                                stroke="white"
+                                                strokeWidth={2}
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            />
+                                            <Path
+                                                d="M18.0445 9.66672C17.7829 9.21282 17.4027 8.83862 16.9447 8.58419C16.4867 8.32975 15.9682 8.20465 15.4445 8.22228H12.5556C11.7895 8.22228 11.0547 8.52664 10.5129 9.06841C9.97111 9.61018 9.66675 10.345 9.66675 11.1112C9.66675 11.8773 9.97111 12.6121 10.5129 13.1539C11.0547 13.6957 11.7895 14.0001 12.5556 14.0001H15.4445C16.2107 14.0001 16.9455 14.3044 17.4873 14.8462C18.0291 15.388 18.3334 16.1228 18.3334 16.8889C18.3334 17.6551 18.0291 18.3899 17.4873 18.9317C16.9455 19.4735 16.2107 19.7778 15.4445 19.7778H12.5556C12.032 19.7955 11.5135 19.6704 11.0555 19.4159C10.5975 19.1615 10.2173 18.7873 9.95564 18.3334M14.0001 6.77783V21.2223"
+                                                stroke="white"
+                                                strokeWidth={2}
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                            />
+                                        </Svg>
+                                        <Text style={styles.button}>{item.loyalty_points}</Text>
+                                    </View>
+                                </Pressable>
+                            </View>
                         </View>
                     </View>
-                </View>
-                 ))}
+                ))}
             </View>
 
         </ScrollView>
@@ -161,8 +163,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingRight: 30
     },
-
-
+    shop: {
+        color: Colors.text_primary,
+        fontWeight: '600',
+        alignSelf: 'center',
+        fontSize:20
+    },
     product: {
         fontFamily: 'Poppins-SemiBold',
         fontWeight: '600',
@@ -175,7 +181,7 @@ const styles = StyleSheet.create({
         fontFamily: 'Poppins-SemiBold',
         fontWeight: '600',
         fontSize: 17,
-        borderBottomColor: '#EC1C24',
+        borderBottomColor: Colors.brand_primary,
         borderBottomWidth: 2,
         textAlign: 'center',
     },
@@ -273,7 +279,7 @@ const styles = StyleSheet.create({
         width: width * 0.5,
         fontFamily: 'Poppins-Medium',
         fontSize: width * 0.04,
-        color: 'red',
+        color: Colors.brand_primary,
     },
 
     btnContainer_1: {
@@ -282,7 +288,7 @@ const styles = StyleSheet.create({
         borderRadius: width * 0.02,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'red',
+        backgroundColor: Colors.brand_primary,
         fontFamily: 'Poppins-Bold',
         fontSize: width * 0.04,
         flexDirection: 'row',

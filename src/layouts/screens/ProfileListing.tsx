@@ -58,10 +58,10 @@ function ProfileListing({ navigation }: any) {
             <Text style={styles.text}>Address</Text>
           </View>
         </Pressable>
-        <View style={styles.container}>
+        {/* <View style={styles.container}>
           <Icon name="cart" size={30} color="black" />
           <Text style={styles.text}>Wishlist</Text>
-        </View>
+        </View> */}
         <Pressable>
           <TouchableOpacity onPress={() => navigation.navigate('OrderHistory')}>
             <View style={styles.container}>
@@ -70,10 +70,6 @@ function ProfileListing({ navigation }: any) {
             </View>
           </TouchableOpacity>
         </Pressable>
-        <TouchableOpacity style={styles.container} onPress={() => navigation.navigate('Voucher')}>
-          <Icon name="pricetags-sharp" size={20} color="black" />
-          <Text style={styles.text}>Coupons</Text>
-        </TouchableOpacity>
         <TouchableOpacity
           onPress={() => LogOut()}
         // disabled={loading}

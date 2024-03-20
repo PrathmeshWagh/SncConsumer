@@ -8,6 +8,7 @@ import { Avatar, RadioButton } from 'react-native-paper';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import { CommonActions, useFocusEffect, useNavigation } from '@react-navigation/native';
 import Appbar from '../../components/Appbar';
+import Colors from '../style/colors';
 const { width, height } = Dimensions.get('window');
 
 
@@ -38,7 +39,7 @@ const NewProfile = () => {
   };
   useFocusEffect(
     useCallback(() => {
-      getdata(); 
+      getdata();
     }, [])
   );
 
@@ -62,13 +63,13 @@ const NewProfile = () => {
         <IonIcon
           name="arrow-back"
           size={26}
-          color={'red'}
+          color={Colors.brand_primary}
         // style={styles.img_3}
         />
       </Pressable>
       <View>
         <View style={styles.profile}>
-          <Avatar.Image size={85} source={{ uri: profile?.data.avatar_original }} style={styles.profileImage} />
+          <Image source={{ uri: profile?.data.avatar_original }} style={styles.profileImage} />
         </View>
 
         <View style={styles.info}>
@@ -151,8 +152,9 @@ const styles = StyleSheet.create({
     marginBottom: 50
   },
   profileImage: {
-    height: width * 0.2,
-    width: width * 0.2,
+    height: width * 0.25,
+    width: width * 0.25,
+    borderRadius: 50
   },
   welcomeText: {
     position: 'absolute',
@@ -321,8 +323,8 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingHorizontal: 40,
     marginTop: 40,
-    backgroundColor: '#EC1C24',
-    borderColor: '#EC1C24',
+    backgroundColor: Colors.brand_primary,
+    borderColor: Colors.brand_primary,
   },
   save: {
     color: 'white',

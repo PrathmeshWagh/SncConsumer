@@ -3,7 +3,7 @@ import { View, Text, StyleSheet, Dimensions, Image, TouchableOpacity, TextInput,
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { RadioButton } from 'react-native-paper';
+import { Portal, RadioButton, Modal } from 'react-native-paper';
 import CalendarPicker from 'react-native-calendar-picker';
 import { getMethod, postMethod } from '../../utils/helper';
 import moment from 'moment';
@@ -16,11 +16,8 @@ import { Pressable } from 'react-native';
 
 const Checkout = ({ navigation, route }: any) => {
   const { deliveryValue } = route.params;
-  console.log("deliveryValue", deliveryValue);
   const [paymentMethod, setPaymentMethod] = useState('');
-  const [delivery, setDelivery] = useState('delivery');
   const [details, setDetails] = useState([]);
-  const [selectedDelivery, setSelectedDelivery] = useState<string>('');
   const [deliveryAddress, setDeliveryAddress] = useState({});
   const [subtotal, setSubtotal] = useState(0);
   const [deliveryAmt, setDeliveryAmt] = useState(0);
@@ -39,13 +36,24 @@ const Checkout = ({ navigation, route }: any) => {
   const [isSelfCollection, setIsSelfCollection] = useState(false);
   const [deliveryType, setDeliveryType] = useState('');
   const [coupon, setCoupon] = useState('');
+  const [amountDetails, setAmountDetails] = useState();
+  const [couponCode, setCouponCode] = useState('');
+  const [couponDiscount, setCouponDiscount] = useState(0);
+  const [visible, setVisible] = useState(false);
+  const [vouchar, setVouchar] = useState([]);
+  const [reedemVouchar, setReedemVouchar] = useState();
 
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     handleDelivery();
-  //     availableDeliveryDates();
-  //   }, [])
-  // );
+  const showModal = () => setVisible(true);
+  const hideModal = () => setVisible(false);
+
+
+  useFocusEffect(
+    useCallback(() => {
+      handleDelivery();
+      availableDeliveryDates();
+      claimedVouchar();
+    }, [])
+  );
 
   const onRefresh = async () => {
     setRefreshing(true);
@@ -66,7 +74,6 @@ const Checkout = ({ navigation, route }: any) => {
     try {
       const api: any = await getMethod(`checkout/get-selected-cart-delivery-address`);
       if (api.status === 200) {
-        console.log(".....", api.data.delivery_type)
         setDeliveryAddress(api.data.data);
         setDeliveryType(api.data.delivery_type)
         setAdd(api.data.data.id);
@@ -83,12 +90,13 @@ const Checkout = ({ navigation, route }: any) => {
 
 
   const getDetails = async () => {
-    // console.log("getDetailsdeliveryValue",deliveryValue)
     setLoadingGetDetails(true); // Set loading state to true
     try {
-      const api: any = await getMethod(`checkout/cart-details`);
+      const api: any = await getMethod(`checkout/cart-details?coupon_code=${couponCode}&coupon_discount=${couponDiscount}`);
       if (api.status === 200) {
+        console.log("tax", api.data.tax, api.data.tax_amt);
         setDetails(api.data.data);
+        setAmountDetails(api.data);
         setSubtotal(api.data.subtotal);
         setDeliveryAmt(api.data.delivery_amt);
         setDeliveryFeeIcon(api.data.delivery_fee_icon);
@@ -99,11 +107,12 @@ const Checkout = ({ navigation, route }: any) => {
         console.log('API Error:', api.data.message);
       }
     } catch (e) {
-      console.log('Error while fetchinggg:', e);
+      console.log('Error while fetching:', e);
     } finally {
       setLoadingGetDetails(false); // Reset loading state
     }
   };
+
 
   const availableDeliveryDates = async () => {
     try {
@@ -136,54 +145,21 @@ const Checkout = ({ navigation, route }: any) => {
         address_id: add,
         remark: remark,
         payment_type: payMethod,
-        delivery_date: deliveryDate,
-      };
-      console.log("place-order", deliveryDate, payMethod);
-      const api: any = await postMethod('place-order', data);
-      if (api.data.status === true) {
-        console.log("place-orderDATA---", api.data);
-        Snackbar.show({
-          text: api.data.message,
-          duration: Snackbar.LENGTH_SHORT,
-          textColor: 'white',
-          backgroundColor: 'green',
-        });
-        navigation.navigate("TabNavigation");
-      } else {
-        console.log('else');
-        Snackbar.show({
-          text: api.data.message,
-          duration: Snackbar.LENGTH_SHORT,
-          textColor: 'white',
-          backgroundColor: 'red',
-        });
-      }
-    } catch (error: any) {
-      console.log('catch', error);
-    }
-  };
-
-  const placeOrderNew = async () => {
-    try {
-      const data = {
-        delivery_type: deliveryValue,
-        address_id: add,
-        remark: newRemark,
-        payment_type: newPaymentMethod,
         delivery_date: selectedDate,
+        coupon_code: couponCode,
+        voucher_id: reedemVouchar
       };
-      console.log("place-orderNew", data)
-
+      console.log("place-order", data);
       const api: any = await postMethod('place-order', data);
       if (api.data.status === true) {
-        console.log("place-orderNewDATA---", api.data)
+        // console.log("place-orderDATA---", api.data);
         Snackbar.show({
           text: api.data.message,
           duration: Snackbar.LENGTH_SHORT,
           textColor: 'white',
           backgroundColor: 'green',
         });
-        navigation.navigate("TabNavigator")
+        navigation.navigate("TabNavigator");
       } else {
         console.log('else', api.data);
         Snackbar.show({
@@ -198,16 +174,104 @@ const Checkout = ({ navigation, route }: any) => {
     }
   };
 
-  const handlePlaceOrder = async () => {
-    if (deliveryDate) {
-      placeOrder();
-    } else {
-      placeOrderNew();
+  const couponApply = async () => {
+    try {
+      const api: any = await getMethod(`checkout/apply-coupon?coupon_code=${coupon}`);
+      if (api.status === 200) {
+        setCouponCode(api.data.coupon_code)
+        setCouponDiscount(api.data.discount)
+        await getDetails();
+      } else {
+        console.log('API Error:', api.data.message);
+      }
+    } catch (e) {
+      console.log('Error while fetching:', e);
+    } finally {
+      // setLoadingDeliveryChange(false);
+      console.log('Error while fetching:');
     }
   };
 
+  const claimedVouchar = async () => {
+    try {
+      const api: any = await getMethod(`claimed-vouchers`);
+      if (api.status === 200) {
+        setVouchar(api.data.data);
+        console.log('API data:', api.data.data);
+      } else {
+        console.log('API Error:', api.data.message);
+      }
+    } catch (e) {
+      console.log('Error while fetching:', e);
+    } finally {
+      // setLoadingDeliveryChange(false);
+      console.log('Error while fetching:');
+    }
+  };
+  const reddemVouchar = async (voucherId:any) => {
+    try {
+      const api: any = await getMethod(`checkout/apply-vouchers?voucher_id=${voucherId}`);
+      if (api.status === 200) {
+        setReedemVouchar(api.data.voucher_id);
+        hideModal();
+        if (api.data.voucher_type === 'discount') {
+          // If voucher type is discount, pass voucher_discount and voucher_id to getDetailsWithVoucher
+          await getDetailsWithVoucher(api.data.voucher_id, api.data.voucher_discount, api.data.voucher_type);
+        } else if (api.data.voucher_type === 'loyalty_points') {
+          // If voucher type is loyalty_points, pass voucher_id and loyalty_coins to getDetailsWithVoucher
+          await getDetailsWithVoucher(api.data.voucher_id, api.data.loyalty_coins, api.data.voucher_type);
+        }
+        Snackbar.show({
+          text: api.data.message,
+          duration: Snackbar.LENGTH_SHORT,
+          textColor: 'white',
+          backgroundColor: 'green',
+        });
+      } else {
+        console.log('API Error:', api.data.message);
+      }
+    } catch (e) {
+      console.log('Error while fetching:', e);
+    } finally {
+      console.log('Error while fetching:');
+    }
+  };
+  
+  const getDetailsWithVoucher = async (voucherId: any, voucherDiscount: any, voucherType: string,) => {
+    setLoadingGetDetails(true);
+    try {
+      let apiEndpoint = 'checkout/cart-details';
+      let queryParams = '';
+      if (voucherType === 'discount') {
+        // If the voucher type is discount, add voucher_discount and voucher_id to the query parameters
+        queryParams = `?voucher_id=${voucherId}&voucher_discount=${voucherDiscount}`;
+      } else if (voucherType === 'loyalty_points') {
+        // If the voucher type is loyalty points, add voucher_id and voucher_loyalty_coins to the query parameters
+        queryParams = `?voucher_id=${voucherId}&voucher_loyalty_coins=${voucherDiscount}`;
+      }
+      console.log("apiEndpoint+queryParams",apiEndpoint + queryParams)
+      const api: any = await getMethod(apiEndpoint + queryParams);
+      if (api.status === 200) {
+        console.log("tax", api.data.tax, api.data.tax_amt);
+        setDetails(api.data.data);
+        setAmountDetails(api.data);
+        setSubtotal(api.data.subtotal);
+        setDeliveryAmt(api.data.delivery_amt);
+        setDeliveryFeeIcon(api.data.delivery_fee_icon);
+        setDeliverydate(api.data.old_data.delivery_date);
+        setRemark(api.data.old_data.remark);
+        setPaymentMethod(api.data.old_payment_type);
+      } else {
+        console.log('API Error:', api.data.message);
+      }
+    } catch (e) {
+      console.log('Error while fetching:', e);
+    } finally {
+      setLoadingGetDetails(false); // Reset loading state
+    }
+  };
+  
   return (
-
     <>
       <SafeAreaView>
         <ScrollView refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}>
@@ -254,10 +318,15 @@ const Checkout = ({ navigation, route }: any) => {
                 style={styles.input}
                 onChangeText={setCoupon}
                 value={coupon}
-                placeholder="Apply Coupon or Voucher"
+                placeholder="Apply Coupon"
               />
-              <Text style={styles.applyText}>Apply</Text>
+              <Pressable onPress={couponApply}>
+                <Text style={styles.applyText}>Apply</Text>
+              </Pressable>
             </View>
+            <Pressable style={styles.vouchar} onPress={showModal}>
+              <Text style={styles.voucharText}>Vouchar</Text>
+            </Pressable>
             <View style={styles.detailedContainer}>
               {loadingGetDetails ? (
                 <ActivityIndicator size="small" color={Colors.brand_primary} />
@@ -278,14 +347,46 @@ const Checkout = ({ navigation, route }: any) => {
                       <Text style={styles.price_0}>${item.total}</Text>
                     </View>
                   ))}
-                  <View style={styles.shippingView}>
+                  {/* <View style={styles.shippingView}>
                     <Text style={styles.column_text_0}>Shipping Charges</Text>
                     <Text style={styles.column_text_0}>{deliveryFeeIcon} ${deliveryAmt}</Text>
-                  </View>
-                  <View style={styles.totalView}>
+                  </View> */}
+                  <View style={styles.shippingView}>
                     <Text style={styles.column_text_0}>Subtotal </Text>
-                    <Text style={styles.column_text_0}>${subtotal}</Text>
+                    <Text style={styles.column_text_0}>{subtotal}</Text>
                   </View>
+                  {amountDetails && amountDetails.coupon_discount !== 0 && (
+                    <View style={styles.shippingView}>
+                      <Text style={styles.column_text_0}>Coupon Discount</Text>
+                      <Text style={styles.column_text_0}>{amountDetails.coupon_discount}</Text>
+                    </View>
+                  )}
+                  {amountDetails && amountDetails.voucher_discount !== 0 && (
+                    <View style={styles.shippingView}>
+                      <Text style={styles.column_text_0}>Voucher Discount</Text>
+                      <Text style={styles.column_text_0}>{amountDetails?.voucher_discount}</Text>
+                    </View>
+                  )}
+                   {amountDetails && amountDetails.voucher_loyalty_coins !== 0 && (
+                    <View style={styles.shippingView}>
+                      <Text style={styles.column_text_0}>You will earn$</Text>
+                      <Text style={styles.column_text_0}>{amountDetails?.voucher_loyalty_coins}</Text>
+                    </View>
+                  )}
+                  <View style={styles.shippingView}>
+                    <Text style={styles.column_text_0}>Tax</Text>
+                    <Text style={styles.column_text_0}>{amountDetails?.tax_amt} ({amountDetails?.tax}%)</Text>
+                  </View>
+                  <View style={styles.shippingView}>
+                    <Text style={styles.column_text_0}>Total</Text>
+                    <Text style={styles.column_text_0}>{amountDetails?.total}</Text>
+                  </View>
+                  {amountDetails && amountDetails.total_loyalty_coins !== 0 && (
+                    <View style={styles.totalView}>
+                      <Text style={styles.column_text_0}>Total Loyalty Coins </Text>
+                      <Text style={styles.column_text_0}>{amountDetails?.total_loyalty_coins}</Text>
+                    </View>
+                  )}
                 </View>
               )}
             </View>
@@ -386,19 +487,43 @@ const Checkout = ({ navigation, route }: any) => {
               <View style={styles.cart_content}>
                 <Text style={styles.textContent}>Back </Text>
               </View>
-
               <View style={styles.cart_content_0}>
-                <TouchableOpacity onPress={handlePlaceOrder}>
+                <TouchableOpacity onPress={placeOrder}>
                   <Text style={styles.textContent_0}>Place Order</Text>
                 </TouchableOpacity>
               </View>
-
             </View>
-
-
           </View>
-
         </ScrollView >
+        <Portal>
+          <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.modalContainer}>
+            <Text style={styles.voucharDetails}>Vouchar Details</Text>
+            <ScrollView>
+              {vouchar.map((voucher, index) => (
+                <View key={index} style={styles.voucherContainer}>
+                  <Image
+                    style={styles.tinyLogo}
+                    source={{ uri: voucher.image }}
+                  />
+                  <View style={styles.voucherDetails}>
+                    <Text style={styles.voucherDetailText}>Voucher Details: {voucher.voucher_name}</Text>
+                    <Text style={styles.voucherDetailText}>Expires on: {voucher.expiry_date}</Text>
+                  </View>
+                  <View style={styles.buttonContainer}>
+                    <Pressable style={styles.removeButton}>
+                      <Text style={styles.buttonText}>Remove</Text>
+                    </Pressable>
+                    <Pressable
+                      style={styles.applyButton}
+                      onPress={() => reddemVouchar(voucher.id)}>
+                      <Text style={styles.buttonText}>Apply</Text>
+                    </Pressable>
+                  </View>
+                </View>
+              ))}
+            </ScrollView>
+          </Modal>
+        </Portal>
       </SafeAreaView >
     </>
 
@@ -420,7 +545,87 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 20,
   },
+  voucherDetailText: {
+    color: Colors.text_primary
+  },
+  voucherDetails: {
+    marginVertical: 10
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginVertical: 15
+  },
+  buttonText: {
+    fontWeight: '500',
+    fontSize: 16,
+    color: Colors.white
+  },
+  removeButton: {
+    borderWidth: 1,
+    borderColor: Colors.brand_primary,
+    borderRadius: 8,
+    padding: 8,
+    paddingHorizontal: 15,
+    backgroundColor: Colors.brand_primary,
+    width: 120,
+    alignItems: 'center'
+  },
+  applyButton: {
+    borderWidth: 1,
+    borderColor: 'green',
+    borderRadius: 8,
+    padding: 8,
+    paddingHorizontal: 15,
+    backgroundColor: 'green',
+    width: 150,
+    alignItems: 'center'
+  },
+  applyButtonText: {
 
+  },
+  alignVouchar: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 10
+  },
+  modalContainer: {
+    backgroundColor: 'white',
+    padding: 20,
+    margin: 20,
+    borderRadius: 10,
+  },
+  tinyLogo: {
+    width: 150,
+    height: 80
+  },
+  vouchar: {
+    padding: 10,
+    borderWidth: 1,
+    borderColor: Colors.brand_primary,
+    backgroundColor: Colors.brand_primary,
+    width: 150,
+    marginLeft: 20,
+    alignItems: 'center',
+    marginBottom: 20,
+    borderRadius: 8
+  },
+  voucharText: {
+    color: Colors.text_primary,
+    fontWeight: '500',
+    fontSize: 16
+  },
+  voucharDetailText: {
+    color: Colors.text_primary,
+    fontSize: 12,
+    marginLeft: -140
+  },
+
+  voucharDetails: {
+    color: Colors.text_primary,
+    fontWeight: '500',
+    fontSize: 16,
+  },
   align: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -429,17 +634,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     color: Colors.brand_primary,
-    paddingHorizontal:20
+    paddingHorizontal: 20
   },
   input: {
     flex: 1,
     borderWidth: 1,
-    borderColor:'#E3E3E3',
+    borderColor: '#E3E3E3',
     backgroundColor: '#E3E3E3',
     padding: 10,
     marginLeft: 20,
-    marginVertical:20,
-    borderRadius:8
+    marginVertical: 20,
+    borderRadius: 8
   },
   nameNo: {
     flexDirection: 'row',
