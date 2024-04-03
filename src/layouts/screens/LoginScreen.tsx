@@ -161,11 +161,11 @@ export const LoginScreen = ({ navigation }: any) => {
                 {errors.password && (
                     <Text style={styles.errorText}>{errors.password.message}</Text>
                 )}
-                {/* <View style={styles.pass}>
-                    <TouchableOpacity>
+                <View style={styles.pass}>
+                    <TouchableOpacity onPress={()=>navigation.navigate('ForgotPasswordScreen')}>
                         <Text style={styles.password}>Forgot Password?</Text>
                     </TouchableOpacity>
-                </View> */}
+                </View>
                 {/* <View style={styles.btnContainer}>
                     <Pressable>
                         <Text style={styles.text}>LOGIN WITH FACEBOOK</Text>

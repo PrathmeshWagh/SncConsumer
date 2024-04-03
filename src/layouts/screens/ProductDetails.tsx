@@ -18,9 +18,9 @@ const height = Dimensions.get('window').height;
 const ProductDetails = ({ navigation, route }: any) => {
 
   const cartValue = useSelector((state: any) => state.reducer);
-  const { productId, categoryId } = route.params;
+  const { productId} = route.params;
   // console.log("productId", productId);
-  // console.log("categoryId", categoryId);
+  //  console.log("categoryId", categoryId);
   const [product, setProduct] = useState();
   const [quantity, setQuantity] = useState(1);
   const [addCart, setAddCart] = useState();
@@ -35,13 +35,11 @@ const ProductDetails = ({ navigation, route }: any) => {
   const [selectedTopVariation, setselectedTopVariation] = useState('');
   const [selectedBottomVariation, setselectedBottomVariation] = useState('');
 
-
   const { width } = useWindowDimensions();
 
   useEffect(() => {
     singleProduct();
     variationPricing();
-    relatedProducts();
 
     const backHandler = BackHandler.addEventListener('hardwareBackPress', () => {
       navigation.navigate('ProductName');
@@ -68,6 +66,7 @@ const ProductDetails = ({ navigation, route }: any) => {
       if (api.status === 200) {
         setProduct(api.data.data);
         setDisplayedPrice(api.data.data.main_price);
+        relatedProducts(api.data.data.category_id);
         setLoading(false);
       } else {
         console.log('API Error:', api.data.message);
@@ -108,7 +107,7 @@ const ProductDetails = ({ navigation, route }: any) => {
         top_variant: selectedTopVariation, // The selected quantity
         bottom_variant: selectedBottomVariation,
         quantity: quantity,
-         // Pass the selected variant
+        // Pass the selected variant
       };
       console.log("carts.........................", body);
 
@@ -145,9 +144,9 @@ const ProductDetails = ({ navigation, route }: any) => {
   };
 
 
-  const relatedProducts = async () => {
+  const relatedProducts = async (category_id) => {
     try {
-      const api: any = await getMethod(`related-products?category_id=${categoryId}&product_id=${productId}`);
+      const api: any = await getMethod(`related-products?category_id=${category_id}&product_id=${productId}`);
       if (api.status === 200) {
         // setLoading(true);
         // console.log("first===second", api.data.data)
@@ -166,7 +165,7 @@ const ProductDetails = ({ navigation, route }: any) => {
       if (selectedTopVariation && selectedBottomVariation) { // Check if both top and bottom variants are selected
 
         const selectedVariant = `${selectedTopVariation}-${selectedBottomVariation}`;
-  
+
         const api: any = await getMethod(`products-variant-price?product_id=${productId}&top_variant=${selectedTopVariation}&bottom_variant=${selectedBottomVariation}`);
 
         if (api.status === 200) {
@@ -265,7 +264,7 @@ const ProductDetails = ({ navigation, route }: any) => {
                           {product.variant_product === 1 && (
                             <View style={styles.size}>
                               <Text style={{ color: Colors.brand_primary, fontFamily: 'Poppins-SemiBold' }}>Variant : </Text>
-                              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                              <View style={{ flexDirection: 'row', alignItems: 'center',marginVertical:10 }}>
                                 <Text style={{ color: Colors.brand_primary, fontFamily: 'Poppins-SemiBold' }}>Top: </Text>
                                 {product.new_top_variations.map((topVariant: string, index: number) => (
                                   <Text
@@ -283,7 +282,7 @@ const ProductDetails = ({ navigation, route }: any) => {
                                   </Text>
                                 ))}
                               </View>
-                              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                              <View style={{ flexDirection: 'row', alignItems: 'center',marginVertical:10 }}>
                                 <Text style={{ color: Colors.brand_primary, fontFamily: 'Poppins-SemiBold' }}>Bottom: </Text>
                                 {product.new_bottom_variations.map((bottomVariant: string, index: number) => (
                                   <Text
@@ -363,9 +362,9 @@ const ProductDetails = ({ navigation, route }: any) => {
                     {/* )} */}
                   </View>
                 </Pressable>
-                <TouchableOpacity style={styles.cart_content_0} onPress={() => navigation.navigate('CartScreen')}>
+                <Pressable style={styles.cart_content_0} onPress={addToCart} >
                   <Text style={styles.textContent_0}>BUY NOW</Text>
-                </TouchableOpacity>
+                </Pressable>
               </View>
             </View>
           </View>
@@ -805,9 +804,7 @@ const styles = StyleSheet.create({
   },
   size: {
     marginRight: 50,
-    marginBottom: 10,
-    flexDirection: 'row',
-
+    marginVertical: 10,
   },
   title: {
     fontFamily: 'Poppins-SemiBold',

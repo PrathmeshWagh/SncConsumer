@@ -9,12 +9,11 @@ import { RadioButton } from 'react-native-paper';
 import { getMethod } from '../../utils/helper';
 import Modal from 'react-native-modal';
 import Appbar from '../../components/Appbar';
-import Colors from '../style/colors';
 
 
 
-const PopularProductScreen = ({ navigation }: any) => {
-  
+const CategoryScreen = ({ navigation,route}: any) => {
+    const { categoryId } = route.params;
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
   const [sortPage, setSortPage] = useState(false);
@@ -41,7 +40,7 @@ const PopularProductScreen = ({ navigation }: any) => {
 
   const fetchData = async () => {
     try {
-      const api: any = await getMethod('products/popular-products');
+      const api: any = await getMethod(`product-by-category?category_id=${categoryId}`);
       if (api.status === 200) {
         setProducts(api.data.data);
         // console.log("ALL PRODUCTS--", api.data.data)
@@ -56,6 +55,8 @@ const PopularProductScreen = ({ navigation }: any) => {
       console.log('Error while fetchinggg:', e);
     }
   };
+
+
 
 
 
@@ -149,10 +150,10 @@ const PopularProductScreen = ({ navigation }: any) => {
           <View style={styles.body}>
             <Appbar />
             <View style={styles.searchContianer}>
-              <Text style={styles.home}>Popular Products </Text>
+              <Text style={styles.home}>Category</Text>
             </View>
-            {/* <Text onPress={restFilter}>RESET FILTER</Text> */}
-            {/* <View style={styles.container}>
+            {/* <Text onPress={restFilter}>RESET FILTER</Text>
+            <View style={styles.container}>
               <Pressable onPress={toggleModal} >
                 <View style={styles.content}>
                   <Svg width={20} height={16} viewBox="0 0 20 16" fill="none">
@@ -171,16 +172,20 @@ const PopularProductScreen = ({ navigation }: any) => {
                 </View>
               </Pressable>
             </View> */}
-              <View style={styles.imageContainer_1}>
-              {products.length === 0 ? (
-                <Text style={{fontSize:22,color:Colors.brand_primary}}>No deals for today</Text>
-              ) : (
-                showAllProducts &&
+            <View style={styles.imageContainer_1} >
+                
+              {showAllProducts && // Render only if showAllProducts is true
                 products.map(item => (
                   <View style={styles.box} key={item.id}>
-                    <TouchableOpacity onPress={() => navigation.navigate('ProductDetails', { productId: item.id, categoryId: item.category_id })}>
+                    <TouchableOpacity onPress={() => navigation.navigate('ProductDetails',
+                      {
+                        productId: item.id,
+                        categoryId: item.category_id
+                      }
+                      // {categoryId: item.category_id}
+                    )}>
                       <View style={styles.imageContainer}>
-                        <Image source={{ uri: item.thumbnail_image }} style={styles.img_8} />
+                        <Image source={{ uri: item.thumbnail_img }} style={styles.img_8} />
                       </View>
                       <View style={styles.price}>
                         <Text style={styles.cost}>{item.main_price} </Text>
@@ -192,8 +197,7 @@ const PopularProductScreen = ({ navigation }: any) => {
                       <Text style={styles.title}>{item.name}</Text>
                     </TouchableOpacity>
                   </View>
-                ))
-              )}
+                ))}
             </View>
           </View>
           <View style={styles.imageContainer_one}>
@@ -269,7 +273,7 @@ const PopularProductScreen = ({ navigation }: any) => {
 
 
 
-export default PopularProductScreen;
+export default CategoryScreen;
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
@@ -542,7 +546,7 @@ const styles = StyleSheet.create({
     marginLeft: 12,
     // backgroundColor: 'white',
     // flex:1,
-    // backgroundColor: 'white',
+  
 
   },
 

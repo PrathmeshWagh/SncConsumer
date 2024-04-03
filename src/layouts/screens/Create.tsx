@@ -23,6 +23,7 @@ const Create = ({ navigation }: any) => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const { control, handleSubmit, formState: { errors }, setValue } = useForm();
+    const [dobError, setDobError] = useState('');
 
 
     const onSubmit = async (data: any) => {
@@ -85,12 +86,16 @@ const Create = ({ navigation }: any) => {
             console.log('Error fetching address:', error);
         }
     };
+    const isDateFormatValid = (date: string) => {
+        const regex = /^(0[1-9]|[1-2][0-9]|3[0-1])\/(0[1-9]|1[0-2])\/\d{4}$/;
+        return regex.test(date);
+    };
 
     return (
         <View>
             <ScrollView>
                 <View style={styles.body}>
-                <Text style={styles.title}>Create Your</Text>
+                    <Text style={styles.title}>Create Your</Text>
                     <Text style={styles.title_1}>Account</Text>
 
                     {/* INPUT FOR FIRST NAME */}
@@ -103,6 +108,7 @@ const Create = ({ navigation }: any) => {
                             render={({ field }) => (
                                 <TextInput placeholder="Enter your first name"
                                     style={styles.input}
+                                    activeUnderlineColor={Colors.brand_primary}
                                     underlineColor="white"
                                     value={fname}
                                     onChangeText={(value) => {
@@ -131,6 +137,7 @@ const Create = ({ navigation }: any) => {
                                 <TextInput placeholder="Enter your last name"
                                     style={styles.input}
                                     underlineColor="white"
+                                    activeUnderlineColor={Colors.brand_primary}
                                     value={lname}
                                     onChangeText={(value) => {
                                         setlName(value);
@@ -155,6 +162,7 @@ const Create = ({ navigation }: any) => {
                             render={({ field }) => (
                                 <TextInput placeholder="Enter your email address" style={styles.input}
                                     underlineColor="white"
+                                    activeUnderlineColor={Colors.brand_primary}
                                     value={email}
                                     onChangeText={(value) => {
                                         setEmail(value);
@@ -177,11 +185,13 @@ const Create = ({ navigation }: any) => {
                         <Controller
                             control={control}
                             render={({ field }) => (
-                                <TextInput placeholder="Enter your Phone number" style={styles.input}
+                                <TextInput
+                                    placeholder="Enter your Phone number" style={styles.input}
                                     underlineColor="white"
                                     keyboardType="numeric"
+                                    activeUnderlineColor={Colors.brand_primary}
                                     value={phone}
-                                    // onChangeText={(value) => setPhone(value)}
+                                    activeUnderlineColor={Colors.brand_primary}
                                     onChangeText={(value) => {
                                         if (value.length <= 8) {
                                             setPhone(value);
@@ -212,9 +222,12 @@ const Create = ({ navigation }: any) => {
                         <Controller
                             control={control}
                             render={({ field }) => (
-                                <TextInput placeholder="Enter your DOB" style={styles.input}
-                                    underlineColor="white"
+                                <TextInput
+                                    style={styles.input}
+                                    placeholder="Enter your DOB (DD/MM/YYYY)"
                                     value={dob}
+                                    underlineColor="white"
+                                    activeUnderlineColor={Colors.brand_primary}
                                     onChangeText={(value) => {
                                         setDob(value);
                                         field.onChange(value);
@@ -224,9 +237,12 @@ const Create = ({ navigation }: any) => {
                             name="dob"
                             rules={{
                                 required: 'DOB is required',
-                                //  pattern: { value: /^\S+@\S+$/i, message: 'Invalid email' } 
+                                validate: {
+                                    validFormat: (value) => isDateFormatValid(value) || 'Invalid date format (DD/MM/YYYY)'
+                                }
                             }}
                             defaultValue=""
+
                         />
                         {errors.dob && <Text style={styles.error}>{errors.dob.message}</Text>}
 
@@ -241,6 +257,7 @@ const Create = ({ navigation }: any) => {
                             render={({ field }) => (
                                 <TextInput placeholder="Enter your Gender" style={styles.input}
                                     underlineColor="white"
+                                    activeUnderlineColor={Colors.brand_primary}
                                     value={gender}
                                     onChangeText={(value) => {
                                         setGender(value);
@@ -250,12 +267,12 @@ const Create = ({ navigation }: any) => {
                             )}
                             name="gender"
                             rules={{
-                                required: 'gender is required',
+                                required: 'Gender is required',
                                 //  pattern: { value: /^\S+@\S+$/i, message: 'Invalid email' } 
                             }}
                             defaultValue=""
                         />
-                        {errors.gender && <Text style={styles.error}>{errors.gender.message}</Text>}
+                      {errors.gender?.message && <Text style={styles.error}>{errors.gender.message}</Text>}
 
                     </View>
                     {/* INPUT FOR GENDER. */}
@@ -269,6 +286,7 @@ const Create = ({ navigation }: any) => {
                                 <TextInput placeholder="Enter your Postal code" style={styles.input}
                                     underlineColor="white"
                                     keyboardType="numeric"
+                                    activeUnderlineColor={Colors.brand_primary}
                                     value={postalCode}
 
                                     onChangeText={(value) => {
@@ -310,6 +328,7 @@ const Create = ({ navigation }: any) => {
                                 <TextInput
                                     placeholder="Enter Your Address"
                                     style={styles.addresInput}
+                                    activeUnderlineColor={Colors.brand_primary}
                                     underlineColor="white"
                                     value={address}
                                     multiline={true}
@@ -321,10 +340,13 @@ const Create = ({ navigation }: any) => {
                                 />
                             )}
                             name="address"
-                            rules={{ minLength: { value: 1, message: 'Address is required' } }}
+                            rules={{
+                                required: 'Address is required',
+                                //  pattern: { value: /^\S+@\S+$/i, message: 'Invalid email' } 
+                            }}
                             defaultValue=""
                         />
-                        {errors.address && <Text style={styles.error}>{errors.address.message}</Text>}
+                        {errors.address?.message && <Text style={styles.error}>{errors.address.message}</Text>}
 
 
                     </View>
@@ -338,6 +360,7 @@ const Create = ({ navigation }: any) => {
                             render={({ field }) => (
                                 <TextInput placeholder="Enter your Unit No" style={styles.input}
                                     underlineColor="white"
+                                    activeUnderlineColor={Colors.brand_primary}
                                     keyboardType="numeric"
                                     value={unitNo}
                                     onChangeText={(value) => {
@@ -363,6 +386,7 @@ const Create = ({ navigation }: any) => {
                             render={({ field }) => (
                                 <TextInput placeholder="Enter your password" style={styles.input}
                                     underlineColor="white"
+                                    activeUnderlineColor={Colors.brand_primary}
                                     keyboardType="numeric"
                                     value={password}
                                     onChangeText={(value) => {
@@ -388,6 +412,7 @@ const Create = ({ navigation }: any) => {
                             render={({ field }) => (
                                 <TextInput placeholder="Confirm Password" style={styles.input}
                                     underlineColor="white"
+                                    activeUnderlineColor={Colors.brand_primary}
                                     keyboardType="numeric"
                                     value={confirmPassword}
                                     onChangeText={(value) => {
@@ -440,6 +465,9 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: width * 0.04,
         borderRadius: width * 0.04,
     },
+    error: {
+        color: Colors.red
+    },
     body: {
         flex: 1,
         justifyContent: 'center',
@@ -461,7 +489,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         alignSelf: 'center',
         justifyContent: 'center',
-        backgroundColor:Colors.brand_primary,
+        backgroundColor: Colors.brand_primary,
         zIndex: -4,
         fontFamily: 'Poppins-Bold',
         fontSize: width * 0.04,
@@ -496,7 +524,7 @@ const styles = StyleSheet.create({
         borderRadius: width * 0.02,
         // paddingLeft: width * 0.01,
         paddingBottom: width * 0.02,
-        borderColor:Colors.brand_primary,
+        borderColor: Colors.brand_primary,
         color: 'black',
         borderWidth: 1,
         outlineWidth: 0,
@@ -525,7 +553,7 @@ const styles = StyleSheet.create({
         width: '100%',
         fontWeight: '600',
         fontSize: 34,
-        color:Colors.brand_primary,
+        color: Colors.brand_primary,
         marginBottom: windowHeight * 0.03,
     },
 })

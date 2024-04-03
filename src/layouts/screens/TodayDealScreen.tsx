@@ -9,11 +9,12 @@ import { RadioButton } from 'react-native-paper';
 import { getMethod } from '../../utils/helper';
 import Modal from 'react-native-modal';
 import Appbar from '../../components/Appbar';
+import Colors from '../style/colors';
 
 
 
 const TodayDealScreen = ({ navigation }: any) => {
-  
+
   const [isPickerOpen, setIsPickerOpen] = useState(false);
   const [selectedOption, setSelectedOption] = useState(null);
   const [sortPage, setSortPage] = useState(false);
@@ -107,7 +108,7 @@ const TodayDealScreen = ({ navigation }: any) => {
   const [isModalVisible, setModalVisible] = useState(false);
   const [isSecondModalVisible, setSecondModalVisible] = useState(false);
 
-  const [checked, setChecked] =useState('');
+  const [checked, setChecked] = useState('');
 
 
   const toggleModal = () => {
@@ -172,17 +173,14 @@ const TodayDealScreen = ({ navigation }: any) => {
                 </View>
               </Pressable>
             </View> */}
-            <View style={styles.imageContainer_1} >
-              {showAllProducts && // Render only if showAllProducts is true
+            <View style={styles.imageContainer_1}>
+              {products.length === 0 ? (
+                <Text style={{fontSize:22,color:Colors.brand_primary}}>No deals for today</Text>
+              ) : (
+                showAllProducts &&
                 products.map(item => (
                   <View style={styles.box} key={item.id}>
-                    <TouchableOpacity onPress={() => navigation.navigate('ProductDetails',
-                      {
-                        productId: item.id,
-                        categoryId: item.category_id
-                      }
-                      // {categoryId: item.category_id}
-                    )}>
+                    <TouchableOpacity onPress={() => navigation.navigate('ProductDetails', { productId: item.id, categoryId: item.category_id })}>
                       <View style={styles.imageContainer}>
                         <Image source={{ uri: item.thumbnail_image }} style={styles.img_8} />
                       </View>
@@ -196,8 +194,10 @@ const TodayDealScreen = ({ navigation }: any) => {
                       <Text style={styles.title}>{item.name}</Text>
                     </TouchableOpacity>
                   </View>
-                ))}
+                ))
+              )}
             </View>
+
           </View>
           <View style={styles.imageContainer_one}>
             {showDeals && // Render only if showDeals is true
@@ -229,7 +229,7 @@ const TodayDealScreen = ({ navigation }: any) => {
               <View style={{ paddingBottom: 20 }}>
                 <ScrollView>
                   <RadioButton.Group onValueChange={handleRadioButtonChangeCategory} value={checked}>
-                    
+
                     {categoryIds.map(categoryId => (
                       <RadioButton.Item
                         key={categoryId}
@@ -294,7 +294,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     marginLeft: 25,
     marginTop: 10,
-    
+
   },
 
   optionContainer: {
@@ -486,7 +486,7 @@ const styles = StyleSheet.create({
     fontWeight: '900',
     position: 'relative',
     zIndex: -15,
-    flex:1
+    flex: 1
   },
 
   content: {
@@ -531,7 +531,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     marginLeft: 12,
-    flex:1,
+    flex: 1,
   },
   imageContainer_one: {
     width: '100%',
@@ -545,7 +545,7 @@ const styles = StyleSheet.create({
     marginLeft: 12,
     // backgroundColor: 'white',
     // flex:1,
-  
+
 
   },
 

@@ -9,6 +9,7 @@ import { RadioButton } from 'react-native-paper';
 import { getMethod } from '../../utils/helper';
 import Modal from 'react-native-modal';
 import Appbar from '../../components/Appbar';
+import Colors from '../style/colors';
 
 
 
@@ -172,17 +173,14 @@ const FlashDealScreen = ({ navigation }: any) => {
                 </View>
               </Pressable>
             </View> */}
-            <View style={styles.imageContainer_1} >
-              {showAllProducts && // Render only if showAllProducts is true
+              <View style={styles.imageContainer_1}>
+              {products.length === 0 ? (
+                <Text style={{fontSize:22,color:Colors.brand_primary}}>No deals for today</Text>
+              ) : (
+                showAllProducts &&
                 products.map(item => (
                   <View style={styles.box} key={item.id}>
-                    <TouchableOpacity onPress={() => navigation.navigate('ProductDetails',
-                      {
-                        productId: item.id,
-                        categoryId: item.category_id
-                      }
-                      // {categoryId: item.category_id}
-                    )}>
+                    <TouchableOpacity onPress={() => navigation.navigate('ProductDetails', { productId: item.id, categoryId: item.category_id })}>
                       <View style={styles.imageContainer}>
                         <Image source={{ uri: item.thumbnail_image }} style={styles.img_8} />
                       </View>
@@ -196,7 +194,8 @@ const FlashDealScreen = ({ navigation }: any) => {
                       <Text style={styles.title}>{item.name}</Text>
                     </TouchableOpacity>
                   </View>
-                ))}
+                ))
+              )}
             </View>
           </View>
           <View style={styles.imageContainer_one}>

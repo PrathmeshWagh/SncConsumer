@@ -194,7 +194,7 @@ const SelectAddress = ({ navigation, route }: any) => {
                         </View>
                     )}
                     <TouchableOpacity style={styles.saveBtn}>
-                        <Text onPress={selectedAddress} style={styles.saveBtnText}>Change Address</Text>
+                        <Text onPress={selectedAddress} style={styles.saveBtnText}>Next</Text>
                     </TouchableOpacity>
                 </ScrollView>
             </View>
@@ -385,7 +385,9 @@ const styles = StyleSheet.create({
         borderRadius: 8,
         alignSelf: 'center',
         marginTop: 30,
-        marginBottom: 60
+        marginBottom: 60,
+        width:100,
+        alignItems:'center'
     },
     saveBtnText: {
         color: 'white',

@@ -107,7 +107,7 @@ const HomeScreen = ({ navigation }: any) => {
 
   const categoryItems = async () => {
     try {
-      const api: any = await getMethod('all-categories-home-screen');
+      const api: any = await getMethod('all-categories');
       if (api.status === 200) {
         setCategoryData(api.data.data);
       } else {
@@ -211,9 +211,9 @@ const HomeScreen = ({ navigation }: any) => {
             <HeaderScreen />
             <View style={styles.body}>
               <Pressable style={styles.searchContianer} onPress={handleSearchPress}>
-              <Icon name="search" size={24} color="#BBBBBB" />
+                <Icon name="search" size={24} color="#BBBBBB" />
               </Pressable>
-                {/* <TextInput style={styles.searchContent}
+              {/* <TextInput style={styles.searchContent}
                   underlineColor="#E3E3E3"
                   right={
                     <TextInput.Icon
@@ -221,7 +221,7 @@ const HomeScreen = ({ navigation }: any) => {
                     />
                   }
                 /> */}
-             
+
               {/* ========================================================================================= */}
               <View>
                 {/* <Text onPress={() => navigation.navigate('Test')} style={{padding:30}}>Test</Text> */}
@@ -254,12 +254,15 @@ const HomeScreen = ({ navigation }: any) => {
                   data={categoryData}
                   keyExtractor={(item) => item.id.toString()}
                   renderItem={({ item }) => (
-                    <Image source={{ uri: item.banner }} style={styles.img_7} />
+                    <Pressable onPress={() => navigation.navigate('CategoryScreen', { categoryId: item.id })}>
+                      <Image source={{ uri: item.banner }} style={styles.img_7} />
+                    </Pressable>
                   )}
                   ListEmptyComponent={() => (
-                    <Text style={styles.displayText}>No Deals available for Today.</Text>
+                    <Text style={styles.displayText}>No categories available.</Text>
                   )}
                 />
+
               </View>
               <View>
                 <View style={styles.categories}>
@@ -453,12 +456,12 @@ const styles = StyleSheet.create({
     width: windowWidth * 0.9,
     height: windowWidth * 0.12,
     backgroundColor: '#E3E3E3',
-    alignItems:'flex-end',
+    alignItems: 'flex-end',
     alignSelf: 'center',
     marginBottom: windowHeight * 0.02,
     borderRadius: 10,
-    paddingRight:20,
-    paddingTop:10
+    paddingRight: 20,
+    paddingTop: 10
     // zIndex: -5,
     // position: 'relative',
   },
