@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { View, Text, StyleSheet, Dimensions, Image, TouchableOpacity, TextInput, SafeAreaView, ScrollView, RefreshControl, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Image, Pressable, TextInput, SafeAreaView, ScrollView, RefreshControl, ActivityIndicator } from 'react-native';
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -11,7 +11,6 @@ import Snackbar from 'react-native-snackbar';
 import Appbar from '../../components/Appbar';
 import { useFocusEffect } from '@react-navigation/native';
 import Colors from '../style/colors';
-import { Pressable } from 'react-native';
 
 
 const Checkout = ({ navigation, route }: any) => {
@@ -40,8 +39,8 @@ const Checkout = ({ navigation, route }: any) => {
   const [couponCode, setCouponCode] = useState('');
   const [couponDiscount, setCouponDiscount] = useState(0);
   const [visible, setVisible] = useState(false);
-  const [vouchar, setVouchar] = useState([]);
-  const [reedemVouchar, setReedemVouchar] = useState();
+  const [voucher, setVoucher] = useState([]);
+  const [reedemvoucher, setReedemvoucher] = useState();
 
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
@@ -51,7 +50,7 @@ const Checkout = ({ navigation, route }: any) => {
     useCallback(() => {
       handleDelivery();
       availableDeliveryDates();
-      claimedVouchar();
+      claimedvoucher();
     }, [])
   );
 
@@ -147,7 +146,7 @@ const Checkout = ({ navigation, route }: any) => {
         payment_type: payMethod,
         delivery_date: selectedDate,
         coupon_code: couponCode,
-        voucher_id: reedemVouchar
+        voucher_id: reedemvoucher
       };
       console.log("place-order", data);
       const api: any = await postMethod('place-order', data);
@@ -159,7 +158,7 @@ const Checkout = ({ navigation, route }: any) => {
           textColor: 'white',
           backgroundColor: 'green',
         });
-        navigation.navigate("TabNavigator");
+        navigation.navigate("DrawerNavigator");
       } else {
         console.log('else', api.data);
         Snackbar.show({
@@ -192,11 +191,11 @@ const Checkout = ({ navigation, route }: any) => {
     }
   };
 
-  const claimedVouchar = async () => {
+  const claimedvoucher = async () => {
     try {
       const api: any = await getMethod(`claimed-vouchers`);
       if (api.status === 200) {
-        setVouchar(api.data.data);
+        setVoucher(api.data.data);
         console.log('API data:', api.data.data);
       } else {
         console.log('API Error:', api.data.message);
@@ -208,11 +207,11 @@ const Checkout = ({ navigation, route }: any) => {
       console.log('Error while fetching:');
     }
   };
-  const reddemVouchar = async (voucherId:any) => {
+  const reddemvoucher = async (voucherId:any) => {
     try {
       const api: any = await getMethod(`checkout/apply-vouchers?voucher_id=${voucherId}`);
       if (api.status === 200) {
-        setReedemVouchar(api.data.voucher_id);
+        setReedemvoucher(api.data.voucher_id);
         hideModal();
         if (api.data.voucher_type === 'discount') {
           // If voucher type is discount, pass voucher_discount and voucher_id to getDetailsWithVoucher
@@ -324,8 +323,8 @@ const Checkout = ({ navigation, route }: any) => {
                 <Text style={styles.applyText}>Apply</Text>
               </Pressable>
             </View>
-            <Pressable style={styles.vouchar} onPress={showModal}>
-              <Text style={styles.voucharText}>Vouchar</Text>
+            <Pressable style={styles.voucher} onPress={showModal}>
+              <Text style={styles.voucherText}>Voucher</Text>
             </Pressable>
             <View style={styles.detailedContainer}>
               {loadingGetDetails ? (
@@ -484,22 +483,22 @@ const Checkout = ({ navigation, route }: any) => {
               </View>
             )}
             <View style={styles.cart_container}>
-              <View style={styles.cart_content}>
+            <Pressable style={styles.cart_content} onPress={()=>navigation.goBack()}>
                 <Text style={styles.textContent}>Back </Text>
-              </View>
+              </Pressable>
               <View style={styles.cart_content_0}>
-                <TouchableOpacity onPress={placeOrder}>
+                <Pressable onPress={placeOrder}>
                   <Text style={styles.textContent_0}>Place Order</Text>
-                </TouchableOpacity>
+                </Pressable>
               </View>
             </View>
           </View>
         </ScrollView >
         <Portal>
           <Modal visible={visible} onDismiss={hideModal} contentContainerStyle={styles.modalContainer}>
-            <Text style={styles.voucharDetails}>Vouchar Details</Text>
+            <Text style={styles.voucherDetails}>Voucher Details</Text>
             <ScrollView>
-              {vouchar.map((voucher, index) => (
+              {voucher.map((voucher, index) => (
                 <View key={index} style={styles.voucherContainer}>
                   <Image
                     style={styles.tinyLogo}
@@ -515,7 +514,7 @@ const Checkout = ({ navigation, route }: any) => {
                     </Pressable>
                     <Pressable
                       style={styles.applyButton}
-                      onPress={() => reddemVouchar(voucher.id)}>
+                      onPress={() => reddemvoucher(voucher.id)}>
                       <Text style={styles.buttonText}>Apply</Text>
                     </Pressable>
                   </View>
@@ -584,7 +583,7 @@ const styles = StyleSheet.create({
   applyButtonText: {
 
   },
-  alignVouchar: {
+  alignvoucher: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingVertical: 10
@@ -599,7 +598,7 @@ const styles = StyleSheet.create({
     width: 150,
     height: 80
   },
-  vouchar: {
+  voucher: {
     padding: 10,
     borderWidth: 1,
     borderColor: Colors.brand_primary,
@@ -610,18 +609,18 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderRadius: 8
   },
-  voucharText: {
+  voucherText: {
     color: Colors.text_primary,
     fontWeight: '500',
     fontSize: 16
   },
-  voucharDetailText: {
+  voucherDetailText: {
     color: Colors.text_primary,
     fontSize: 12,
     marginLeft: -140
   },
 
-  voucharDetails: {
+  voucherDetails: {
     color: Colors.text_primary,
     fontWeight: '500',
     fontSize: 16,

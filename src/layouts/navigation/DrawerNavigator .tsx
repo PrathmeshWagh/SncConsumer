@@ -20,9 +20,9 @@ export default function DrawerNavigator() {
     <Drawer.Navigator initialRouteName="TabNavigator"
       screenOptions={{
         headerShown: false,
-      }} drawerContent={props => <CustomDrawer {...props} />} >
-      <Drawer.Screen name="DrawerHome" component={TabNavigator} />
-      <Drawer.Screen name="AboutName" component={AboutScreen} />
+      }} drawerContent={props => <CustomDrawer {...props} />}>
+      <Drawer.Screen name="DrawerHome" component={TabNavigator}/>
+      <Drawer.Screen name="AboutName" component={AboutScreen}/>
       <Drawer.Screen name="ProductName" component={ProductScreen} />
       <Drawer.Screen name="ProductVoucherName" component={ProductVoucher} />
       <Drawer.Screen name="VoucherName" component={Voucher} />

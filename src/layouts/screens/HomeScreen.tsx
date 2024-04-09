@@ -144,6 +144,7 @@ const HomeScreen = ({ navigation }: any) => {
       console.log('Error while fetchinggg:', e);
     }
   }
+  
   const featuredDeal = async () => {
     try {
       const api: any = await getMethod('products/featured-home-screen');
@@ -221,13 +222,10 @@ const HomeScreen = ({ navigation }: any) => {
                     />
                   }
                 /> */}
-
-              {/* ========================================================================================= */}
               <View>
                 {/* <Text onPress={() => navigation.navigate('Test')} style={{padding:30}}>Test</Text> */}
 
               </View>
-              {/* ============================================================================================ */}
 
               <View style={styles.categories_1}>
                 <View style={styles.imageContainer}>
@@ -494,8 +492,8 @@ const styles = StyleSheet.create({
   },
 
   img_6: {
-    width: windowWidth * 0.88,
-    height: windowWidth * 0.42,
+    width: windowWidth * 0.80,
+    height: windowWidth * 0.30,
     marginBottom: windowHeight * 0.01,
   },
 

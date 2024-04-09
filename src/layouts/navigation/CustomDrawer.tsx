@@ -4,11 +4,9 @@ import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
-
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { useNavigation } from '@react-navigation/native';
-
 import { Svg, Path } from 'react-native-svg';
-
 import React from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -64,8 +62,8 @@ const CustomDrawer = ({ props }: any) => {
         <View style={styles.drawerView}>
           <DrawerItem
             icon={() => (
-              <FontAwesome6
-                name="coins"
+              <MaterialIcons
+                name="punch-clock"
                 size={20}
                 color="black"
               />
@@ -93,7 +91,7 @@ const CustomDrawer = ({ props }: any) => {
         <View style={styles.drawerView}>
           <DrawerItem
             icon={() => (
-              <FontAwesome6
+              <FontAwesome5
                 name="coins"
                 size={20}
                 color="black"
@@ -106,8 +104,8 @@ const CustomDrawer = ({ props }: any) => {
         <View style={styles.drawerView}>
           <DrawerItem
             icon={() => (
-              <FontAwesome6
-                name="coins"
+              <FontAwesome5
+                name="history"
                 size={20}
                 color="black"
               />
@@ -192,7 +190,7 @@ const styles = StyleSheet.create({
 
   RouteName1: {
     fontFamily: 'Poppins-SemiBold',
-    fontSize: 18,
+    fontSize: 16,
     color: 'black',
     // marginLeft: -20,
   },
